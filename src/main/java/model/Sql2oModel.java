@@ -32,18 +32,21 @@ public class Sql2oModel implements Element {
         try(Connection con = sql2o.open()){
             con.createQuery("CREATE TABLE ELEMENT " +
                     "(id INTEGER not NULL, " +
+                    "idListe INTEGER not NULL, " +
                     "dateCreation DATE, " +
                     "dateDerModif DATE, " +
                     "titre VARCHAR(255), " +
                     "description VARCHAR(255), " +
-                    "PRIMARY KEY ( id ));").executeUpdate();
+                    "PRIMARY KEY ( id ), " +
+                    "FOREIGN KEY ( idListe ) REFERENCES LISTE ( id ));").executeUpdate();
         }
     }
 
-    public static void insertTableElement(int id, String dateCreation, String dateDerModif, String titre, String description){
+    public static void insertTableElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
         try(Connection con = sql2o.open()){
-            con.createQuery("INSERT INTO ELEMENT(id, dateCreation, dateDerModif, titre, description) VALUES (:id, :dateCreation, :dateDerModif, :titre, :description)")
+            con.createQuery("INSERT INTO ELEMENT(id, idListe, dateCreation, dateDerModif, titre, description) VALUES (:id, :idListe, :dateCreation, :dateDerModif, :titre, :description)")
                     .addParameter("id", id)
+                    .addParameter("idListe", idListe)
                     .addParameter("dateCreation", dateCreation)
                     .addParameter("dateDerModif", dateDerModif)
                     .addParameter("titre", titre)
@@ -66,6 +69,41 @@ public class Sql2oModel implements Element {
                 list_e.add(element);
             }
             return list_e;
+        }
+    }
+
+    public static void createTableListe(){
+        try(Connection con = sql2o.open()){
+            con.createQuery("CREATE TABLE LISTE " +
+                    "(id INTEGER not NULL, " +
+                    "titre VARCHAR(255), " +
+                    "description VARCHAR(255), " +
+                    "listElement VARCHAR(1000), " +
+                    "PRIMARY KEY ( id ));").executeUpdate();
+        }
+    }
+
+    public static void insertTableListe(int id, String titre, String description, String listElement){
+        try(Connection con = sql2o.open()){
+            con.createQuery("INSERT INTO LISTE(id, titre, description, listElement) VALUES (:id, :titre, :description, :listElement)")
+                    .addParameter("id", id)
+                    .addParameter("titre", titre)
+                    .addParameter("description", description)
+                    .addParameter("listElement", listElement)
+                    .executeUpdate();
+        }
+    }
+
+    public static Liste getListe(int val){
+        try(Connection con = sql2o.open()) {
+            Liste l = new Liste();
+            Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
+
+            l.setTitre((String) table.rows().get(val).getObject("titre"));
+            l.setDescription((String) table.rows().get(val).getObject("description"));
+            //l.setListElement((Date) table.rows().get(val).getObject("listElement"));
+
+            return l;
         }
     }
 }
