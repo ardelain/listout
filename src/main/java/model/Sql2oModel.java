@@ -22,13 +22,13 @@ public class Sql2oModel implements Element {
         //this.sql2o = sql2o;
     }
 
-    public static void dropTable(){
+    public static void dropTable(String table){
         try(Connection con = sql2o.open()){
-            con.createQuery("DROP TABLE ELEMENT").executeUpdate();
+            con.createQuery("DROP TABLE "+ table).executeUpdate();
         }
     }
 
-    public static void createTable(){
+    public static void createTableElement(){
         try(Connection con = sql2o.open()){
             con.createQuery("CREATE TABLE ELEMENT " +
                     "(id INTEGER not NULL, " +
@@ -40,7 +40,7 @@ public class Sql2oModel implements Element {
         }
     }
 
-    public static void insertTable(int id, String dateCreation, String dateDerModif, String titre, String description){
+    public static void insertTableElement(int id, String dateCreation, String dateDerModif, String titre, String description){
         try(Connection con = sql2o.open()){
             con.createQuery("INSERT INTO ELEMENT(id, dateCreation, dateDerModif, titre, description) VALUES (:id, :dateCreation, :dateDerModif, :titre, :description)")
                     .addParameter("id", id)

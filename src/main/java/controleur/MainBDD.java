@@ -22,12 +22,12 @@ public class MainBDD {
         //Sql2o sql2o = new Sql2o("jdbc:h2:./listout");
         Sql2oModel model = new Sql2oModel(ds);
 
-        model.dropTable();
+        model.dropTable("ELEMENT");
 
-        model.createTable();
+        model.createTableElement();
 
-        model.insertTable(100, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
-        model.insertTable(101, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
+        model.insertTableElement(100, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
+        model.insertTableElement(101, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
 
         final String[] vals = {""};
 
@@ -45,6 +45,6 @@ public class MainBDD {
         });
 
         String finalVals = vals[0];
-        //get("/hello", (req, res) -> finalVals);
+        get("/hello", (req, res) -> finalVals);
     }
 }
