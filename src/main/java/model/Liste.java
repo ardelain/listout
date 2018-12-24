@@ -30,4 +30,13 @@ public class Liste {
     public void setListElement(List<Element> listElement) {
         this.listElement = listElement;
     }
+
+    @Override
+    public String toString(){
+        String vals = "</br>Titre: " + this.titre +
+                "</br>Description: " + this.description +
+                "</br>Liste d'éléments: " + this.listElement +
+                "</br>";
+        return vals;
+    }
 }

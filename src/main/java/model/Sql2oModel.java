@@ -2,15 +2,12 @@ package model;
 
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
-import org.sql2o.converters.Converter;
 import org.sql2o.data.Row;
 import org.sql2o.data.Table;
-import org.sql2o.quirks.NoQuirks;
 
 import javax.sql.DataSource;
 import javax.xml.bind.Element;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class Sql2oModel implements Element {
     private static Sql2o sql2o;
 
     public Sql2oModel(DataSource ds){
-        this.sql2o = new Sql2o(ds, new NoQuirks(new HashMap<Class, Converter>()));
+        this.sql2o = new Sql2o(ds);
         //this.sql2o = sql2o;
     }
 
@@ -42,8 +39,9 @@ public class Sql2oModel implements Element {
         }
     }
 
-    public static void insertTableElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
+    public static int insertTableElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
         try(Connection con = sql2o.open()){
+
             con.createQuery("INSERT INTO ELEMENT(id, idListe, dateCreation, dateDerModif, titre, description) VALUES (:id, :idListe, :dateCreation, :dateDerModif, :titre, :description)")
                     .addParameter("id", id)
                     .addParameter("idListe", idListe)
@@ -52,6 +50,8 @@ public class Sql2oModel implements Element {
                     .addParameter("titre", titre)
                     .addParameter("description", description)
                     .executeUpdate();
+
+            return idListe;
         }
     }
 
@@ -83,7 +83,7 @@ public class Sql2oModel implements Element {
         }
     }
 
-    public static void insertTableListe(int id, String titre, String description, String listElement){
+    public static void insertTableListe(int id, String titre, String description, List<model.Element> listElement){
         try(Connection con = sql2o.open()){
             con.createQuery("INSERT INTO LISTE(id, titre, description, listElement) VALUES (:id, :titre, :description, :listElement)")
                     .addParameter("id", id)
@@ -97,11 +97,12 @@ public class Sql2oModel implements Element {
     public static Liste getListe(int val){
         try(Connection con = sql2o.open()) {
             Liste l = new Liste();
+            int v = val - 1;
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
 
-            l.setTitre((String) table.rows().get(val).getObject("titre"));
-            l.setDescription((String) table.rows().get(val).getObject("description"));
-            //l.setListElement((Date) table.rows().get(val).getObject("listElement"));
+            l.setTitre((String) table.rows().get(v).getObject("titre"));
+            l.setDescription((String) table.rows().get(v).getObject("description"));
+            l.setListElement((List<model.Element>) table.rows().get(v).getObject("listElement"));
 
             return l;
         }

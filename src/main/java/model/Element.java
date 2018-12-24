@@ -39,4 +39,15 @@ public class Element {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString(){
+        String vals = "</br>DateCreation: " + this.dateCreation +
+                "</br>DateDerModif: " + this.dateDerModif +
+                "</br>Titre: " + this.titre +
+                "</br>Description: " + this.description +
+                "</br>";
+        return vals;
+    }
+
 }

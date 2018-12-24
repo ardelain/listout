@@ -1,6 +1,7 @@
 package controleur;
 
 import model.Element;
+import model.Liste;
 import model.Sql2oModel;
 import org.h2.jdbcx.JdbcDataSource;
 
@@ -28,27 +29,29 @@ public class MainBDD {
         model.createTableListe();
         model.createTableElement();
 
-        model.insertTableListe(1, "La liste", "Notre première liste", "essai1");
+        model.insertTableListe(1, "La liste", "Notre première liste", null);
+        Liste l = model.getListe(1);
 
-        model.insertTableElement(100, 1, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
-        model.insertTableElement(101, 1, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
+        int id = model.insertTableElement(100, 1, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
+
+        int id2 = model.insertTableElement(101, 1, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
+        List<Element> list_e = model.getAllElement();
+        l.setListElement(list_e);
 
         final String[] vals = {""};
-
-        List<Element> list_e = model.getAllElement();
         list_e.forEach(e -> {
-            System.out.println(e.getTitre());
-            System.out.println(e.getDescription());
-            System.out.println(e.getDateCreation());
-            System.out.println(e.getDateDerModif());
-            vals[0] += "</br>DateCreation: " + e.getDateCreation() +
-                    "</br>DateDerModif: " + e.getDateDerModif() +
-                    "</br>Titre: " + e.getTitre() +
-                    "</br>Description: " + e.getDescription() +
-                    "</br></br>";
+            System.out.println(e);
+            vals[0] += e;
         });
 
         String finalVals = vals[0];
         //get("/hello", (req, res) -> finalVals);
+
+        final String[] vals2 = {""};
+        System.out.println(l);
+        vals2[0] += l;
+
+        String finalVals2 = vals2[0];
+        get("/hello", (req, res) -> finalVals2);
     }
 }
