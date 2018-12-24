@@ -38,6 +38,7 @@ public class MainBDD {
         List<Element> list_e = model.getAllElement();
         l.setListElement(list_e);
 
+        //----- Affichage de tous les éléments
         final String[] vals = {""};
         list_e.forEach(e -> {
             System.out.println(e);
@@ -47,6 +48,7 @@ public class MainBDD {
         String finalVals = vals[0];
         //get("/hello", (req, res) -> finalVals);
 
+        //----- Affichage d'une liste en particulier
         final String[] vals2 = {""};
         System.out.println(l);
         vals2[0] += l;
