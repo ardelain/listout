@@ -72,6 +72,21 @@ public class Sql2oModel implements Element {
         }
     }
 
+    public static model.Element getElement(int val){
+        try(Connection con = sql2o.open()){
+            Table table = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
+            model.Element l = new model.Element();
+            int v = val - 1;
+
+            l.setTitre((String) table.rows().get(v).getObject("titre"));
+            l.setDescription((String) table.rows().get(v).getObject("description"));
+            l.setDateCreation((Date) table.rows().get(v).getObject("datecreation"));
+            l.setDateDerModif((Date) table.rows().get(v).getObject("datedermodif"));
+
+            return l;
+        }
+    }
+
     public static void createTableListe(){
         try(Connection con = sql2o.open()){
             con.createQuery("CREATE TABLE LISTE " +
@@ -97,6 +112,20 @@ public class Sql2oModel implements Element {
     public static Liste getListe(int val){
         try(Connection con = sql2o.open()) {
             Liste l = new Liste();
+            int v = val - 1;
+            Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
+
+            l.setTitre((String) table.rows().get(v).getObject("titre"));
+            l.setDescription((String) table.rows().get(v).getObject("description"));
+            l.setListElement((List<model.Element>) table.rows().get(v).getObject("listElement"));
+
+            return l;
+        }
+    }
+
+    public static ListeComposite getListeComposite(int val){
+        try(Connection con = sql2o.open()) {
+            ListeComposite l = new ListeComposite();
             int v = val - 1;
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
 

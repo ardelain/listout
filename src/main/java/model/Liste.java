@@ -38,9 +38,9 @@ public class Liste implements Composant {
 
     @Override
     public String toString(){
-        String vals = "</br>Titre: " + this.titre +
-                "</br>Description: " + this.description +
-                "</br>Liste d'éléments: " + this.listElement +
+        String vals = "\n" + "</br>Titre: " + titre + "\n" +
+                "</br>Description: " + description + "\n" +
+                "</br>Liste d'éléments: " + listElement + "\n" +
                 "</br>";
         return vals;
     }

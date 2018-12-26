@@ -42,10 +42,10 @@ public class Element {
 
     @Override
     public String toString(){
-        String vals = "</br>DateCreation: " + this.dateCreation +
-                "</br>DateDerModif: " + this.dateDerModif +
-                "</br>Titre: " + this.titre +
-                "</br>Description: " + this.description +
+        String vals = "\n" + "</br>DateCreation: " + dateCreation + "\n" +
+                "</br>DateDerModif: " + dateDerModif + "\n" +
+                "</br>Titre: " + titre + "\n" +
+                "</br>Description: " + description + "\n" +
                 "</br>";
         return vals;
     }
