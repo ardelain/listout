@@ -4,6 +4,9 @@ import model.*;
 import org.h2.jdbcx.JdbcDataSource;
 
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import static spark.Spark.get;
@@ -41,7 +44,7 @@ public class MainBDD {
         l.setListElement(list_e);
         l2.setListElement(list_e);
 
-        Element el = model.getElement(2);
+        Element el = model.getElement(1);
         System.out.println("----- " + el + " -----");
 
         //ListeComposite lc = new ListeComposite();
@@ -66,6 +69,10 @@ public class MainBDD {
 
         String finalVals2 = vals2[0];
         //get("/hello", (req, res) -> finalVals2);
+
+        /*el.setDateDerModif();
+        System.out.println(el.getDateDerModif());*/
+        model.updateElement(1, 1, "2018-12-15", "2018-12-28", "toto au berceau", "toto essai1");
 
         //----- Affichage d'une sous-liste
         final String[] vals3 = {""};

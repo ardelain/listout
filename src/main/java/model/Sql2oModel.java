@@ -87,6 +87,19 @@ public class Sql2oModel implements Element {
         }
     }
 
+    public static void updateElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
+        try(Connection con = sql2o.open()){
+            con.createQuery("UPDATE ELEMENT SET idListe = :idListe, dateCreation = :dateCreation, dateDerModif = :dateDerModif, titre = :titre, description = :description WHERE id = :id")
+                .addParameter("id", id)
+                .addParameter("idListe", idListe)
+                .addParameter("dateCreation", dateCreation)
+                .addParameter("dateDerModif", dateDerModif)
+                .addParameter("titre", titre)
+                .addParameter("description", description)
+                .executeUpdate();
+        }
+    }
+
     public static void createTableListe(){
         try(Connection con = sql2o.open()){
             con.createQuery("CREATE TABLE LISTE " +
