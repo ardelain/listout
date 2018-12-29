@@ -125,26 +125,61 @@ public class Sql2oModel implements Element {
     public static Liste getListe(int val){
         try(Connection con = sql2o.open()) {
             Liste l = new Liste();
+            List<model.Element> list_e = new LinkedList<>();
             int v = val - 1;
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
 
             l.setTitre((String) table.rows().get(v).getObject("titre"));
             l.setDescription((String) table.rows().get(v).getObject("description"));
-            l.setListElement((List<model.Element>) table.rows().get(v).getObject("listElement"));
+
+            Table table2 = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
+
+            for (Row row : table2.rows()) {
+                model.Element element = new model.Element();
+                element.setTitre((String) row.getObject("titre"));
+                element.setDescription((String) row.getObject("description"));
+                element.setDateCreation((Date) row.getObject("datecreation"));
+                element.setDateDerModif((Date) row.getObject("datedermodif"));
+                list_e.add(element);
+            }
+            l.setListElement(list_e);
 
             return l;
+        }
+    }
+
+    public static void updateListe(int id, String titre, String description, List<model.Element> listElement){
+        try(Connection con = sql2o.open()){
+            con.createQuery("UPDATE LISTE SET titre = :titre, description = :description WHERE id = :id")
+                    .addParameter("id", id)
+                    .addParameter("titre", titre)
+                    .addParameter("description", description)
+                    .executeUpdate();
         }
     }
 
     public static ListeComposite getListeComposite(int val){
         try(Connection con = sql2o.open()) {
             ListeComposite l = new ListeComposite();
+            List<model.Element> list_e = new LinkedList<>();
             int v = val - 1;
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
 
             l.setTitre((String) table.rows().get(v).getObject("titre"));
             l.setDescription((String) table.rows().get(v).getObject("description"));
             l.setListElement((List<model.Element>) table.rows().get(v).getObject("listElement"));
+
+            Table table2 = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
+
+            for (Row row : table2.rows()) {
+                model.Element element = new model.Element();
+                element.setTitre((String) row.getObject("titre"));
+                element.setDescription((String) row.getObject("description"));
+                element.setDateCreation((Date) row.getObject("datecreation"));
+                element.setDateDerModif((Date) row.getObject("datedermodif"));
+                list_e.add(element);
+            }
+            l.setListElement(list_e);
 
             return l;
         }

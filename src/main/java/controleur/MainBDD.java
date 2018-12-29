@@ -5,7 +5,6 @@ import org.h2.jdbcx.JdbcDataSource;
 
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -33,16 +32,15 @@ public class MainBDD {
         model.insertTableListe(1, "La liste", "Notre première liste", null);
         model.insertTableListe(2, "La liste2", "Notre deuxième liste", null);
         model.insertTableListe(3, "La liste3", "Notre troisième liste", null);
+
+        int id = model.insertTableElement(1, 2, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
+        int id2 = model.insertTableElement(2, 2, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
+
         ListeComposite l = model.getListeComposite(1);
         Liste l2 = model.getListe(2);
         ListeComposite l3 = model.getListeComposite(3);
 
-        int id = model.insertTableElement(1, 1, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
-
-        int id2 = model.insertTableElement(2, 1, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
         List<Element> list_e = model.getAllElement();
-        l.setListElement(list_e);
-        l2.setListElement(list_e);
 
         Element el = model.getElement(1);
         System.out.println("----- " + el + " -----");
@@ -64,15 +62,19 @@ public class MainBDD {
 
         //----- Affichage d'une liste en particulier
         final String[] vals2 = {""};
-        System.out.println(l2);
+        //System.out.println(l2);
         vals2[0] += l;
 
         String finalVals2 = vals2[0];
         //get("/hello", (req, res) -> finalVals2);
 
-        /*el.setDateDerModif();
-        System.out.println(el.getDateDerModif());*/
-        model.updateElement(1, 1, "2018-12-15", "2018-12-28", "toto au berceau", "toto essai1");
+        String s = "2018-12-29";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = sdf.parse(s);
+        el.setDateDerModif(d);
+        model.updateElement(1, 1,sdf.format(el.getDateCreation()), sdf.format(el.getDateDerModif()), el.getTitre(), el.getDescription());
+        list_e = model.getAllElement();
+        //model.updateListe();
 
         //----- Affichage d'une sous-liste
         final String[] vals3 = {""};
@@ -80,7 +82,7 @@ public class MainBDD {
             System.out.println(o);
             vals3[0] += o;
         });*/
-        System.out.println(l.getTitre());
+        //System.out.println(l.getTitre());
         vals3[0] += l;
 
         String finalVals3 = vals3[0];
