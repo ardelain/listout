@@ -27,6 +27,8 @@ public class ListeComposite implements Composant {
         return children.iterator();
     }
 
+
+
     @Override
     public String getTitre() {
         assert null != children;

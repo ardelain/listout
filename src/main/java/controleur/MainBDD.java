@@ -88,5 +88,8 @@ public class MainBDD {
 
         String finalVals3 = vals3[0];
         get("/hello", (req, res) -> finalVals3);
+
+        MainControleur main = new MainControleur();
+        main.main(args);
     }
 }
