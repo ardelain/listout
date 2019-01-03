@@ -6,12 +6,12 @@ import org.sql2o.data.Row;
 import org.sql2o.data.Table;
 
 import javax.sql.DataSource;
-import javax.xml.bind.Element;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Sql2oModel implements Element {
+public class Sql2oModel {
     private static Sql2o sql2o;
 
     public Sql2oModel(DataSource ds){

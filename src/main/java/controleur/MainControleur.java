@@ -18,8 +18,8 @@ import static spark.Spark.internalServerError;
 
 public class MainControleur {
     static Configuration configuration = new Configuration(Configuration.VERSION_2_3_19);
-    public static void main(String[] args) throws Exception {
 
+    public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
         log4jConf.log.info("This is Logger Info");
 
@@ -41,16 +41,22 @@ public class MainControleur {
         //String keyStorePassword = "password";
         //secure(keyStoreLocation, keyStorePassword, null, null);
         // root is 'src/main/resources', so put files in 'src/main/resources/public'
-        staticFiles.location("src/public"); // Static files
         //staticFiles.expireTime(600); // ten minutes
 
         /*--------------*/
 
-        configuration = new Configuration(Configuration.VERSION_2_3_19);
-        configuration.setDirectoryForTemplateLoading(new File("src/public"));
-        configuration.setDefaultEncoding("UTF-8");
-        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        configuration.setLogTemplateExceptions(false);
+        configuration = new Configuration(Configuration.VERSION_2_3_19);//new Configuration(new Version(2, 3, 0));
+        configuration.setDirectoryForTemplateLoading(new File("src/main/ressources"));//MainControleur.class, "/"//new File("src/main/ressources/")
+        //configuration.setClassForTemplateLoading(MainControleur.class, "src/main/ressources");
+        //configuration.setDefaultEncoding("UTF-8");
+        //configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        //configuration.setLogTemplateExceptions(false);
+
+        externalStaticFileLocation("src/main/ressources");
+        //staticFileLocation("/css");
+
+        //staticFiles.externalLocation("/css/");
+        //staticFiles.location("src/main/ressources/templates"); // css
 
         // Les routes :
         /*get("", (request, response) -> {
@@ -89,7 +95,7 @@ public class MainControleur {
                     Map<String, Object> attributes = new HashMap<>();
                     try {
                         // TODO Auto-generated method stub
-                        Template helloTemplate = configuration.getTemplate("accueil.ftl");//render("accueil.ftl", model);
+                        Template helloTemplate = configuration.getTemplate("templates/accueil.ftl");//render("accueil.ftl", model);
                         String document = "accueil.ftl";
                         //helloTemplate.process(document, writer);
                         helloTemplate.dump(writer);
@@ -113,7 +119,7 @@ public class MainControleur {
                 get("", (request, response) -> {
                     StringWriter writer = new StringWriter();
                     try {
-                        Template template = configuration.getTemplate("accueil.ftl");//render("accueil.ftl", model);
+                        Template template = configuration.getTemplate("listes.ftl");//render("accueil.ftl", model);
                         template.dump(writer);
                         System.out.println(writer);
                     } catch (Exception e) {
@@ -131,7 +137,7 @@ public class MainControleur {
                 get("", (request, response) -> {
                     StringWriter writer = new StringWriter();
                     try {
-                        Template template = configuration.getTemplate("accueil.ftl");//render("accueil.ftl", model);
+                        Template template = configuration.getTemplate("info.ftl");//render("accueil.ftl", model);
                         template.dump(writer);
                         System.out.println(writer);
                     } catch (Exception e) {

@@ -36,6 +36,7 @@ public class MainBDD {
         int id = model.insertTableElement(1, 2, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
         int id2 = model.insertTableElement(2, 2, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
 
+
         ListeComposite l = model.getListeComposite(1);
         Liste l2 = model.getListe(2);
         ListeComposite l3 = model.getListeComposite(3);
@@ -78,10 +79,10 @@ public class MainBDD {
 
         //----- Affichage d'une sous-liste
         final String[] vals3 = {""};
-        /*l.getChildren().forEachRemaining(o -> {
-            System.out.println(o);
-            vals3[0] += o;
-        });*/
+        //l.getChildren().forEachRemaining(o -> {
+        //    System.out.println(o);
+        //    vals3[0] += o;
+        //});
         //System.out.println(l.getTitre());
         vals3[0] += l;
 
