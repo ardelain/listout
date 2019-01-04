@@ -1,26 +1,4 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <link  href="../css/style.css" rel="stylesheet">
-    <meta charset="UTF-8"/>
-    <title>Listout</title>
-</head>
-<body>
-<nav>
-    <ul>
-        <li>
-            <a href="/accueil">Acceuil</a>
-
-        </li>
-        <li>
-            <a href="/listes">Listes</a>
-        </li>
-
-        <li>
-            <a href="/info">Info</a>
-        </li>
-    </ul>
-</nav>
+<#include "header.ftl"/>
 <div class="liste">
     <br>
     <br>
@@ -32,11 +10,11 @@
             <table class="table_addliste" >
             <tr >
             <td> <label for="titre">Titre</label></td>
-            <td><input id="titre" name="titre" value="${liste_e[0].titre}"/></input></td><br>
+            <td><input id="titre" name="titre" required=true value="${liste_e[0].titre}"/></input></td><br>
         <tr>
         </tr>
         <td><label for="description">Description</label></td>
-            <td><textarea id="description" name="description" name="message" rows="10" cols="30">${liste_e[0].description}</textarea></td>
+            <td><textarea id="description" name="description" required=true name="message" rows="10" cols="30">${liste_e[0].description}</textarea></td>
             <td><br></td>
             </tr>
             </table>
@@ -44,11 +22,11 @@
             <table class="table_addliste" >
             <tr >
             <td> <label for="titre">Titre</label></td>
-            <td><input id="titre" name="titre" "/></input></td><br>
+            <td><input id="titre" name="titre" required=true /></input></td><br>
             <tr>
             </tr>
             <td><label for="description">Description</label></td>
-            <td><textarea id="description" name="description" name="message" rows="10" cols="30"></textarea></td>
+            <td><textarea id="description" required=true  name="description" name="message" rows="10" cols="30"></textarea></td>
             <td><br></td>
             </tr>
             </table>
@@ -61,12 +39,6 @@
 <br>
 <br>
 <br>
-<footer>
-    <p><br>
-        Arthur DELAIN & Floran CHAZELAS
-        <br>
-        <br>
-        </p>
-</footer>
+<#include "footer.ftl"/>
 </body>
 </html>

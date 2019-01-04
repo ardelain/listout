@@ -46,31 +46,31 @@ public class MainControleur {
         /*----config---- :*/
         port(8080); // Spark will run on port 8080
         //Thread
-        int maxThreads = 2;
+        int maxThreads = 10;
         int minThreads = 1;
         int timeOutMillis = 30000;
-        //threadPool(maxThreads, minThreads, timeOutMillis);
+        threadPool(maxThreads, minThreads, timeOutMillis);
         //Initialisation
-//        awaitInitialization(); // Wait for server to be initialized
+        //awaitInitialization(); // Wait for server to be initialized
         //SSL/HTTPS
-        //String keyStoreLocation = "deploy/keystore.jks";
+        //String keyStoreLocation = "javax.net.ssl.keyStore";//"deploy/keystore.jks";
         //String keyStorePassword = "password";
         //secure(keyStoreLocation, keyStorePassword, null, null);
+
         // root is 'src/main/resources', so put files in 'src/main/resources/public'
-        //staticFiles.expireTime(600); // ten minutes
+        staticFiles.expireTime(600); // ten minutes
 
         /*--------------*/
 
         configuration = new Configuration(Configuration.VERSION_2_3_19);//new Configuration(new Version(2, 3, 0));
         configuration.setDirectoryForTemplateLoading(new File("src/main/ressources"));//MainControleur.class, "/"//new File("src/main/ressources/")
         //configuration.setClassForTemplateLoading(MainControleur.class, "src/main/ressources");
-        //configuration.setDefaultEncoding("UTF-8");
-        //configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        //configuration.setLogTemplateExceptions(false);
+        configuration.setDefaultEncoding("UTF-8");
+        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        configuration.setLogTemplateExceptions(false);
 
         externalStaticFileLocation("src/main/ressources");
         //staticFileLocation("/css");
-
         //staticFiles.externalLocation("/css/");
         //staticFiles.location("src/main/ressources/templates"); // css
 
@@ -89,12 +89,23 @@ public class MainControleur {
                     // TODO Auto-generated method stub
                     //Template template = render("templates/accueil.ftl", null);//configuration.getTemplate("accueil.ftl");//
                     Template template = configuration.getTemplate("templates/accueil.ftl");
-                    String document = "accueil.ftl";
                     //template.process(document, writer);
-                    template.dump(writer);
+                    template.process(null, writer);
+                    //template.dump(writer);
                     System.out.println(writer);
                 } catch (Exception e) {
                     // TODO: handle exception
+                    e.printStackTrace();
+                }
+                return writer;
+            });
+            get("/connexion", (request, response) -> {
+                StringWriter writer = new StringWriter();
+                try {
+                    Template template = configuration.getTemplate("templates/connexion.ftl");
+                    template.process(null, writer);
+                    System.out.println(writer);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return writer;
@@ -226,7 +237,7 @@ public class MainControleur {
                 StringWriter writer = new StringWriter();
                 try {
                     Template template = configuration.getTemplate("templates/info.ftl");//render("accueil.ftl", model);
-                    template.dump(writer);
+                    template.process(null, writer);
                     System.out.println(writer);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -241,7 +252,7 @@ public class MainControleur {
             String finalVals3 = vals3[0];
             get("/all", (req, res) -> finalVals3);
 
-            //?.????....................................................................
+            //?.????....................................................................utile?
             get("/:name", (request, response) -> {
                 return "Page: " + request.params(":name") + " inexistante.";
             });
@@ -261,7 +272,7 @@ public class MainControleur {
             );
         });*/
 
-        //faire page erreur ................................................................
+        //faire page erreur ......................................................................!!
         // gerer l'err 404
         notFound((req, res) -> {
             res.type("application/json");

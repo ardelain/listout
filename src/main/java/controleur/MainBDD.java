@@ -151,7 +151,7 @@ public class MainBDD {
             MainControleur main = new MainControleur(model,l,list_e);
             main.main(args);
         }catch (Exception e){
-            System.err.println("ERREUR INIT SERVEUR");
+            System.err.println("ERREUR INIT SERVEUR"+e);
         }
     }
 }

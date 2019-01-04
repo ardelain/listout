@@ -1,26 +1,4 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <link  href="../css/style.css" rel="stylesheet">
-    <meta charset="UTF-8"/>
-    <title>Listout</title>
-</head>
-<body>
-<nav>
-    <ul>
-        <li>
-            <a href="/accueil">Acceuil</a>
-
-        </li>
-        <li>
-            <a href="/listes">Listes</a>
-        </li>
-
-        <li>
-            <a href="/info">Info</a>
-        </li>
-    </ul>
-</nav>
+<#include "header.ftl"/>
 <r>
     <main>
         <div class="recherche">
@@ -31,7 +9,6 @@
                     <input type="submit" value="Go!">
                 </form>
                 <br>
-                <a id="haut" href="modele.php"> voir un modele</a>
             </div>
         </div>
     </main>
@@ -44,7 +21,7 @@
     <br>
     <#if !liste_e??>
     <div class="boutonall">
-        <button  class="bouton" title="Afficher toutes les listes" onclick="alll()">all</button>
+        <button  class="bouton" title="Afficher toutes les listes" onclick="alll()">toutes</button>
     </div>
     </#if>
 </add>
@@ -147,14 +124,7 @@
 <br>
 <br>
 <br>
-<footer>
-    <p><br>
-        Arthur DELAIN & Floran CHAZELAS
-        <br>
-        <br>
-    </p>
-</footer>
-
+<#include "footer.ftl"/>
 <script>
     function myFunction() {
         //<p id="demo"></p>
