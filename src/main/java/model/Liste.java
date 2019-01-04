@@ -3,9 +3,12 @@ package model;
 import java.util.List;
 
 public class Liste implements Composant {
+    private int id;
     private String titre;
     private String description;
     private List<Element> listElement;
+
+
 
     @Override
     public String getTitre() {
@@ -43,5 +46,15 @@ public class Liste implements Composant {
                 "</br>Liste d'éléments: " + listElement + "\n" +
                 "</br>";
         return vals;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 }

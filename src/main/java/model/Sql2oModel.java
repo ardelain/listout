@@ -62,6 +62,8 @@ public class Sql2oModel {
 
             for (Row row : table.rows()) {
                 model.Element element = new model.Element();
+                element.setId((int) row.getObject("id"));
+                element.setIdListe((int) row.getObject("idListe"));
                 element.setTitre((String) row.getObject("titre"));
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
@@ -78,6 +80,8 @@ public class Sql2oModel {
             model.Element l = new model.Element();
             int v = val - 1;
 
+            l.setId((int) table.rows().get(v).getObject("id"));
+            l.setIdListe((int) table.rows().get(v).getObject("idListe"));
             l.setTitre((String) table.rows().get(v).getObject("titre"));
             l.setDescription((String) table.rows().get(v).getObject("description"));
             l.setDateCreation((Date) table.rows().get(v).getObject("datecreation"));
@@ -129,13 +133,17 @@ public class Sql2oModel {
             int v = val - 1;
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
 
+            l.setId((int) table.rows().get(v).getObject("id"));
             l.setTitre((String) table.rows().get(v).getObject("titre"));
             l.setDescription((String) table.rows().get(v).getObject("description"));
 
-            Table table2 = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
+            Table table2 = con.createQuery("SELECT * FROM ELEMENT WHERE idliste = :val")
+                    .addParameter("val", val)
+                    .executeAndFetchTable();
 
             for (Row row : table2.rows()) {
                 model.Element element = new model.Element();
+                element.setId((int) row.getObject("id"));
                 element.setTitre((String) row.getObject("titre"));
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
@@ -165,14 +173,17 @@ public class Sql2oModel {
             int v = val - 1;
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
 
+            l.setId((int) table.rows().get(v).getObject("id"));
             l.setTitre((String) table.rows().get(v).getObject("titre"));
             l.setDescription((String) table.rows().get(v).getObject("description"));
-            l.setListElement((List<model.Element>) table.rows().get(v).getObject("listElement"));
 
-            Table table2 = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
+            Table table2 = con.createQuery("SELECT * FROM ELEMENT WHERE idListe = :val")
+                    .addParameter("val", val)
+                    .executeAndFetchTable();
 
             for (Row row : table2.rows()) {
                 model.Element element = new model.Element();
+                element.setId((int) row.getObject("id"));
                 element.setTitre((String) row.getObject("titre"));
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));

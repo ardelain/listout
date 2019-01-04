@@ -4,8 +4,10 @@ import model.*;
 import org.h2.jdbcx.JdbcDataSource;
 
 import javax.sql.DataSource;
+import javax.swing.text.html.HTMLDocument;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static spark.Spark.get;
@@ -47,7 +49,6 @@ public class MainBDD {
         System.out.println("----- " + el + " -----");
 
         //ListeComposite lc = new ListeComposite();
-        l.add(l2);
         l.add(l3);
         l3.add(l2);
 
@@ -73,8 +74,64 @@ public class MainBDD {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date d = sdf.parse(s);
         el.setDateDerModif(d);
-        model.updateElement(1, 1,sdf.format(el.getDateCreation()), sdf.format(el.getDateDerModif()), el.getTitre(), el.getDescription());
+        model.updateElement(1, el.getIdListe(),sdf.format(el.getDateCreation()), sdf.format(el.getDateDerModif()), el.getTitre(), el.getDescription());
         list_e = model.getAllElement();
+
+        /*for (Iterator i = l.getChildren(); i.hasNext(); ) {
+            Object objet = i.next();
+            ListeComposite composant = (ListeComposite) objet;
+            //composant.setListElement(list_e);
+            //System.out.println(composant.getId());
+            while (objet != null) {
+                objet = composant.getChildren().next();
+                if (objet == ListeComposite.class) {
+                    if (composant.getId() == el.getIdListe()) {
+                        composant.setListElement(model.getListeComposite(composant.getId()).getListElement());
+                        //System.out.println(composant);
+                    }
+                    composant = (ListeComposite) objet;
+                } else {
+                    //System.out.println(o);
+                    Liste composant2 = (Liste) objet;
+                    if (composant2.getId() == el.getIdListe()) {
+                        composant2.setListElement(model.getListe(composant2.getId()).getListElement());
+                        //System.out.println(composant2);
+                    }
+                    objet = null;
+                }
+            }
+        }
+        System.out.println(l);*/
+
+        Iterator i = l.getChildren();
+        Object o = i.next();
+        ListeComposite liste = (ListeComposite) o;
+        while (o != null){
+            //System.out.println(o);
+            o = liste.getChildren().next();
+            if(o == ListeComposite.class){
+                if(liste.getId() == el.getIdListe()) {
+                    liste.setListElement(model.getListe(liste.getId()).getListElement());
+                    System.out.println(liste);
+                }
+                liste = (ListeComposite) o;
+            }
+            else{
+                //System.out.println(o);
+                Liste liste2 = (Liste) o;
+                if(liste2.getId() == el.getIdListe()) {
+                    liste2.setListElement(model.getListe(liste2.getId()).getListElement());
+                    System.out.println(liste2);
+                }
+                o = null;
+            }
+            /*ListeComposite liste = (ListeComposite) o;
+            System.out.println(liste.getChildren().next());*/
+
+        }
+        //l.setListElement(list_e);
+        //l2.setListElement(list_e);
+        //l3.setListElement(list_e);
         //model.updateListe();
 
         //----- Affichage d'une sous-liste
@@ -84,6 +141,7 @@ public class MainBDD {
         //    vals3[0] += o;
         //});
         //System.out.println(l.getTitre());
+        //System.out.println(l);
         vals3[0] += l;
 
         String finalVals3 = vals3[0];
