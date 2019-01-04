@@ -1,6 +1,10 @@
 package controleur;
 
 import freemarker.template.*;
+import model.Composant;
+import model.Element;
+import model.ListeComposite;
+import model.Sql2oModel;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import spark.ModelAndView;
@@ -10,16 +14,28 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
 import static spark.Spark.internalServerError;
 
 public class MainControleur {
-    static Configuration configuration = new Configuration(Configuration.VERSION_2_3_19);
+    Configuration configuration = new Configuration(Configuration.VERSION_2_3_19);
+    Sql2oModel model;
+    ListeComposite l;
+    List<Element> list_e ;
 
-    public static void main(String[] args) throws Exception {
+    public MainControleur(Sql2oModel model, ListeComposite l,List<Element> list_e) {
+        this.model = model;
+        this.list_e = list_e;//model.getAllElement();
+        this.l = l;//model.getListeComposite(1);
+    }
+
+
+    public void main(String[] args) throws Exception {
         BasicConfigurator.configure();
         log4jConf.log.info("This is Logger Info");
 
@@ -63,65 +79,91 @@ public class MainControleur {
             //response.redirect("/accueil");
             return "!!";
         });*/
-        path("/", () -> {
-            get("", (request, response) -> {
-                return "!";
-            });
-            //before("/*", (q, a) -> log.info("Received api call"));
-            path("/accueil", () -> {
-                Map<String, Object> model = new HashMap<>();
-                get("", (request, response) -> {
-                    return "accueil";
-                });
-                get("/test", (request, response) -> {
-                    StringWriter writer = new StringWriter();
-                    Map<String, Object> attributes = new HashMap<>();
-                    try {
-                        // TODO Auto-generated method stub
-                        Template template = render("accueil.ftl", null);//configuration.getTemplate("accueil.ftl");//
-                        String document = "accueil.ftl";
-                        //template.process(document, writer);
-                        template.dump(writer);
-                        System.out.println(writer);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
-                    return writer;
-                });
-                get("/hello", (request, response) -> {
-                    TemplateHashModel templateHashModel;
-                    StringWriter writer = new StringWriter();
-                    Map<String, Object> attributes = new HashMap<>();
-                    try {
-                        // TODO Auto-generated method stub
-                        Template helloTemplate = configuration.getTemplate("templates/accueil.ftl");//render("accueil.ftl", model);
-                        String document = "accueil.ftl";
-                        //helloTemplate.process(document, writer);
-                        helloTemplate.dump(writer);
-                        System.out.println(writer);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
-                    return writer;
+        //before("/*", (q, a) -> log.info("Received api call"));
 
-                });
-                    /*return new ModelAndView(attributes, "src/public/accueil.ftl");
+        path("/", () -> {
+            get("/accueil", (request, response) -> {
+                StringWriter writer = new StringWriter();
+                Map<String, Object> attributes = new HashMap<>();
+                try {
+                    // TODO Auto-generated method stub
+                    //Template template = render("templates/accueil.ftl", null);//configuration.getTemplate("accueil.ftl");//
+                    Template template = configuration.getTemplate("templates/accueil.ftl");
+                    String document = "accueil.ftl";
+                    //template.process(document, writer);
+                    template.dump(writer);
+                    System.out.println(writer);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                }
+                return writer;
+            });
+               /*return new ModelAndView(attributes, "src/public/accueil.ftl");
                 }, new FreeMarkerEngine());*/
                 /*get("/:name", (request, response) -> {
 
                     //return render("accueil.ftl", model);
                     //return "Test 1 Page: " + request.params(":name") + " inexistante.";
                 });*/
-            });
             path("/listes", () -> {
                 get("", (request, response) -> {
                     StringWriter writer = new StringWriter();
                     try {
-                        Template template = configuration.getTemplate("listes.ftl");//render("accueil.ftl", model);
-                        template.dump(writer);
+                        Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
+                        //template.dump(writer);
+                        template.process(null, writer);
                         System.out.println(writer);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
+                    return writer;
+                    //return "Liste : " + request.params(":name") + " inexistante.";
+                });
+                get("/add", (request, response) -> {
+                    StringWriter writer = new StringWriter();
+                    try {
+                        Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                        template.process(null, writer);
+                        System.out.println(writer);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
+                    return writer;
+                });
+                post("/add", (request, response) -> {
+                    String titre = request.queryParams("titre");
+                    String description = request.queryParams("description");
+                    String id = request.queryParams("id");
+                    if(titre != null || description != null){
+                        if(id == null){
+                            //ajout
+                            //model.insertTableElement(l.getListElement().size()+1,)
+                        }else{
+                            //modification
+                        }
+                    }else{
+                        response.redirect("/listes/add");
+                    }
+                    response.redirect("/listes");
+                    return "!";
+                });
+                get("/all", (request, response) -> {
+                    StringWriter writer = new StringWriter();
+                    //model.getListeComposite(1);
+                    final String[] vals3 = {""};
+                    vals3[0] += l;
+                    String finalVals3 = vals3[0];
+
+                    Map<String, List<Element>> params = new HashMap<>();
+                    List<Element> le = model.getAllElement();
+                    params.put("liste_e", le);
+                    try {
+                        Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
+                        template.process(params, writer);
+                        System.out.println(finalVals3);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
@@ -129,28 +171,120 @@ public class MainControleur {
                     return writer;
                     //return "Listes";
                 });
-                get("/:name", (request, response) -> {
-                    return "Liste : " + request.params(":name") + " inexistante.";
-                });
-            });
-            path("/info", () -> {
-                get("", (request, response) -> {
+
+               /* get("/:name/modif", (request, response) -> {
+                    int i = -3;
+                    i = Integer.parseInt(request.params(":name"));
+                    Element ee;
+                    ee = model.getElement(i);
+
                     StringWriter writer = new StringWriter();
+                    //model.getListeComposite(1);
+                    final String[] vals3 = {""};
+                    vals3[0] += l;
+                    String finalVals3 = vals3[0];
+
+                    Map<String, List<Element>> params = new HashMap<>();
+                    List<Element> le = new ArrayList<>();//= model.getAllElement();
+                    le.add(ee);
+                    params.put("liste_e", le);
                     try {
-                        Template template = configuration.getTemplate("info.ftl");//render("accueil.ftl", model);
-                        template.dump(writer);
-                        System.out.println(writer);
+                        Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                        template.process(params, writer);
+                        System.out.println(finalVals3);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
                     }
                     return writer;
-                    //return "info";
+                });*/
+
+                get("/:name", (request, response) -> {
+
+                    int i = -3;
+                    i = Integer.parseInt(request.params(":name"));
+                    Element ee;
+                    ee = model.getElement(i);
+
+                    StringWriter writer = new StringWriter();
+                    //model.getListeComposite(1);
+                    final String[] vals3 = {""};
+                    vals3[0] += l;
+                    String finalVals3 = vals3[0];
+
+                    Map<String, List<Element>> params = new HashMap<>();
+                    List<Element> le = new ArrayList<>();//= model.getAllElement();
+                    le.add(ee);
+                    params.put("liste_e", le);
+                    try {
+                        Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
+                        template.process(params, writer);
+                        System.out.println(finalVals3);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
+                    return writer;
                 });
+
+                //..........................................probleme css/ chargement page -> la regardeger (affiche sans le css ...?)
+                path("/:name/", () -> {
+                    get("modif", (request, response) -> {
+                        StringWriter writer = new StringWriter();
+                        Map<String, List<Element>> params = new HashMap<>();
+                        List<Element> le = model.getAllElement();
+                        params.put("liste_e", le);
+
+                        try {
+                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                            template.process(params, writer);
+                            System.out.println(writer);
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                            e.printStackTrace();
+                        }
+                        return writer;
+                    });
+                    get("supp", (request, response) -> {
+                        //request.params(":name")
+                        return "Liste supp: " + request.params(":name") + " inexistante.";
+                    });
+                    get(":name", (request, response) -> {
+                        //request.params(":name")
+                        return "Liste name: " + request.params(":name") + " inexistante.";
+                    });
+                });
+
             });
+            get("/info", (request, response) -> {
+                StringWriter writer = new StringWriter();
+                try {
+                    Template template = configuration.getTemplate("templates/info.ftl");//render("accueil.ftl", model);
+                    template.dump(writer);
+                    System.out.println(writer);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                }
+                return writer;
+                //return "info";
+            });
+            model.getListeComposite(1);
+            final String[] vals3 = {""};
+            vals3[0] += l;
+            String finalVals3 = vals3[0];
+            get("/all", (req, res) -> finalVals3);
+
+            //?.????....................................................................
             get("/:name", (request, response) -> {
                 return "Page: " + request.params(":name") + " inexistante.";
             });
+
+        });
+
+        get("/:name", (request, response) -> {
+            //request.params(":name")
+            return "dada : " + request.params(":name") + " inexistante.";
         });
 
         // a integrer apres le choix de template

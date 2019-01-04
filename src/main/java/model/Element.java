@@ -3,8 +3,12 @@ package model;
 import java.util.Date;
 
 public class Element {
+<<<<<<< HEAD
     private int id;
     private int idListe;
+=======
+    private int id = -1;
+>>>>>>> e2cb9ea7926854b34efd9d901ba618a4e0e65ad5
     private Date dateCreation;
     private Date dateDerModif;
     private String titre;
@@ -16,6 +20,14 @@ public class Element {
 
     public Date getDateDerModif() {
         return dateDerModif;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitre() {

@@ -9,28 +9,35 @@
 <nav>
     <ul>
         <li>
-            <a href="">Acceuil</a>
+            <a href="/accueil">Acceuil</a>
 
         </li>
         <li>
-            <a href="">Listes</a>
+            <a href="/listes">Listes</a>
         </li>
 
         <li>
-            <a href="">Info</a>
+            <a href="/info">Info</a>
         </li>
     </ul>
 </nav>
-<div>
-    <a>Arthur DELAIN</a><a>Email:</a>
-    <a> Floran CHAZELAS</a><a>Email:</a>
+<div class="info">
+    <br>
+    <br>
+    <br>
+    <b>Arthur DELAIN Email:</b>
+    <br>
+    <b> Floran CHAZELAS Email:</b>
 </div>
+<br>
+<br>
+<br>
 <footer>
     <p><br>
-        <br>
         Arthur DELAIN & Floran CHAZELAS
         <br>
-        Nous suivre :</p>
+        <br>
+    </p>
 </footer>
 </body>
 </html>

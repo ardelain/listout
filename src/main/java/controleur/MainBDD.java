@@ -145,6 +145,13 @@ public class MainBDD {
         vals3[0] += l;
 
         String finalVals3 = vals3[0];
-        get("/hello", (req, res) -> finalVals3);
+        //get("/hello", (req, res) -> finalVals3);
+
+        try{
+            MainControleur main = new MainControleur(model,l,list_e);
+            main.main(args);
+        }catch (Exception e){
+            System.err.println("ERREUR INIT SERVEUR");
+        }
     }
 }

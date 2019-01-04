@@ -7,6 +7,15 @@ public class Liste implements Composant {
     private String titre;
     private String description;
     private List<Element> listElement;
+    private int id = -1;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
 

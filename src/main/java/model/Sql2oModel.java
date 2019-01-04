@@ -68,6 +68,7 @@ public class Sql2oModel {
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
                 element.setDateDerModif((Date) row.getObject("datedermodif"));
+                element.setId((int) row.getObject("id"));
                 list_e.add(element);
             }
             return list_e;
@@ -86,6 +87,7 @@ public class Sql2oModel {
             l.setDescription((String) table.rows().get(v).getObject("description"));
             l.setDateCreation((Date) table.rows().get(v).getObject("datecreation"));
             l.setDateDerModif((Date) table.rows().get(v).getObject("datedermodif"));
+            l.setId((int) table.rows().get(v).getObject("id"));
 
             return l;
         }
@@ -94,13 +96,13 @@ public class Sql2oModel {
     public static void updateElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
         try(Connection con = sql2o.open()){
             con.createQuery("UPDATE ELEMENT SET idListe = :idListe, dateCreation = :dateCreation, dateDerModif = :dateDerModif, titre = :titre, description = :description WHERE id = :id")
-                .addParameter("id", id)
-                .addParameter("idListe", idListe)
-                .addParameter("dateCreation", dateCreation)
-                .addParameter("dateDerModif", dateDerModif)
-                .addParameter("titre", titre)
-                .addParameter("description", description)
-                .executeUpdate();
+                    .addParameter("id", id)
+                    .addParameter("idListe", idListe)
+                    .addParameter("dateCreation", dateCreation)
+                    .addParameter("dateDerModif", dateDerModif)
+                    .addParameter("titre", titre)
+                    .addParameter("description", description)
+                    .executeUpdate();
         }
     }
 
@@ -148,6 +150,7 @@ public class Sql2oModel {
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
                 element.setDateDerModif((Date) row.getObject("datedermodif"));
+                element.setId((int) row.getObject("id"));
                 list_e.add(element);
             }
             l.setListElement(list_e);
@@ -188,6 +191,7 @@ public class Sql2oModel {
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
                 element.setDateDerModif((Date) row.getObject("datedermodif"));
+                element.setId((int) row.getObject("id"));
                 list_e.add(element);
             }
             l.setListElement(list_e);

@@ -1,3 +1,20 @@
+/*Accueil style*/
+.presentation{
+	width: 100%;
+	text-align: center;
+}
+.titre_b{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 150%
+}
+
+/*Info style*/
+.info {
+	width: 100%;
+	text-align: center;
+}
+
+/*Syle principale*/
 a {
 	color: white;
 	font-weight: bold;
@@ -192,6 +209,32 @@ tr .element{
 	color:#555;
 }
 
+.add {
+	alignment: center;
+	text-align: center;
+}
+
+.boutonaddl{
+	alignment: center;
+	text-align: center;
+}
+
+.boutonall
+{
+	alignment: center;
+	text-align: center;
+}
+
+.bouton {
+	width:50px;
+	height:50px;
+	background:#686868;
+	box-shadow:2px 2px 8px #686868;
+	font:bold 13px Arial;
+	border-radius:50%;
+	color: #ffffff;
+}
+
 .bouton1 {
 	width:25px;
 	height:25px;
@@ -290,4 +333,34 @@ aside{
 
 #slider {
 	margin:3%;
+}
+
+
+/* addlist*/
+
+.liste {
+	width: 100%;
+	alignment: center;
+	text-align: center;
+ }
+
+#liste {
+	width: 100%;
+	alignment: center;
+	text-align: center;
+}
+
+.table_addliste{
+	width: 100%;
+	alignment: center;
+	text-align: center;
+}
+
+#description {
+	width: 100%;
+	height: 50px;
+}
+
+#titre {
+	width: 100%;
 }
