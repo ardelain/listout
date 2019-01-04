@@ -7,9 +7,6 @@ import java.util.List;
 public class LaListe extends AListe{
     private List<AListe> liste = new ArrayList<>();
 
-    public LaListe(String titre, String description, Date dateCreation, Date dateDerModif) {
-        super(titre, description, dateCreation, dateDerModif);
-    }
 
     public List<AListe> getListe() {
         return liste;

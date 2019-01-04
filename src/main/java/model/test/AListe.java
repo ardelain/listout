@@ -4,13 +4,6 @@ import java.util.Date;
 
 public abstract class AListe {
 
-    public AListe(String titre, String description, Date dateCreation,Date dateDerModif) {
-        this.titre = titre;
-        this.description = description;
-        this.dateCreation = dateCreation;
-        this.dateDerModif=dateDerModif;
-    }
-
     private int id;
     private String titre;
     private String description;

@@ -60,7 +60,14 @@ public class UnSql2oModel {
             List<UnElement> list_e = new LinkedList<>();
 
             for (Row row : table.rows()) {
-                UnElement element = new UnElement((String) row.getObject("titre"),(String) row.getObject("description"),(Date) row.getObject("datecreation"),(Date) row.getObject("datedermodif"));
+                UnElement element = new UnElement();
+                element.setId((int) row.getObject("id"));
+                //element.setIdListe((int) row.getObject("idListe"));
+                element.setTitre((String) row.getObject("titre"));
+                element.setDescription((String) row.getObject("description"));
+                element.setDateCreation((Date) row.getObject("datecreation"));
+                element.setDateDerModif((Date) row.getObject("datedermodif"));
+                element.setId((int) row.getObject("id"));
                 list_e.add(element);
             }
             return list_e;
@@ -71,7 +78,14 @@ public class UnSql2oModel {
         try(Connection con = sql2o.open()){
             Table table = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
             int v = val - 1;
-            UnElement l = new UnElement((String) table.rows().get(v).getObject("titre"),(String) table.rows().get(v).getObject("description"),(Date) table.rows().get(v).getObject("datecreation"),(Date) table.rows().get(v).getObject("datedermodif"));
+            UnElement l = new UnElement();
+            l.setId((int) table.rows().get(v).getObject("id"));
+            //l.setIdListe((int) table.rows().get(v).getObject("idListe"));
+            l.setTitre((String) table.rows().get(v).getObject("titre"));
+            l.setDescription((String) table.rows().get(v).getObject("description"));
+            l.setDateCreation((Date) table.rows().get(v).getObject("datecreation"));
+            l.setDateDerModif((Date) table.rows().get(v).getObject("datedermodif"));
+            l.setId((int) table.rows().get(v).getObject("id"));
             return l;
         }
     }
@@ -116,18 +130,23 @@ public class UnSql2oModel {
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
             int v = val - 1;
             Date d = new Date();//...................................................................................................................................Integrer date au liste normale !!!
-            LaListe l = new LaListe((String) table.rows().get(v).getObject("titre"),(String) table.rows().get(v).getObject("description"),d,d);
+            LaListe l = new LaListe();
             List<AListe> list_e = new LinkedList<>();
 
-
-
+            l.setId((int) table.rows().get(v).getObject("id"));
             l.setTitre((String) table.rows().get(v).getObject("titre"));
             l.setDescription((String) table.rows().get(v).getObject("description"));
 
             Table table2 = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
 
             for (Row row : table2.rows()) {
-                UnElement element = new UnElement((String) row.getObject("titre"),(String) row.getObject("description"),(Date) row.getObject("datecreation"),(Date) row.getObject("datedermodif"));
+                UnElement element = new UnElement();
+                element.setId((int) row.getObject("id"));
+                element.setTitre((String) row.getObject("titre"));
+                element.setDescription((String) row.getObject("description"));
+                element.setDateCreation((Date) row.getObject("datecreation"));
+                element.setDateDerModif((Date) row.getObject("datedermodif"));
+                element.setId((int) row.getObject("id"));
                 list_e.add(element);
             }
             l.setListe(list_e);
@@ -152,17 +171,23 @@ public class UnSql2oModel {
             Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
             int v = val - 1;
             Date d = new Date();//...................................................................................................................................Integrer date au liste normale !!!
-            LaListe l = new LaListe((String) table.rows().get(v).getObject("titre"),(String) table.rows().get(v).getObject("description"),d,d);
+            LaListe l = new LaListe();
             List<AListe> list_e = new LinkedList<>();
 
-            //l.setTitre((String) table.rows().get(v).getObject("titre"));
-            //l.setDescription((String) table.rows().get(v).getObject("description"));
-            l.setListe((List<AListe>) table.rows().get(v).getObject("listElement"));
+            l.setId((int) table.rows().get(v).getObject("id"));
+            l.setTitre((String) table.rows().get(v).getObject("titre"));
+            l.setDescription((String) table.rows().get(v).getObject("description"));
 
             Table table2 = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
 
             for (Row row : table2.rows()) {
-                UnElement element = new UnElement((String) row.getObject("titre"),(String) row.getObject("description"),(Date) row.getObject("datecreation"),(Date) row.getObject("datedermodif"));
+                UnElement element = new UnElement();
+                element.setId((int) row.getObject("id"));
+                element.setTitre((String) row.getObject("titre"));
+                element.setDescription((String) row.getObject("description"));
+                element.setDateCreation((Date) row.getObject("datecreation"));
+                element.setDateDerModif((Date) row.getObject("datedermodif"));
+                element.setId((int) row.getObject("id"));
                 list_e.add(element);
             }
             l.setListe(list_e);
