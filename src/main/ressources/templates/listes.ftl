@@ -1,4 +1,5 @@
 <#include "header.ftl"/>
+
 <r>
     <main>
         <div class="recherche">
@@ -21,8 +22,11 @@
     <br>
     <#if !liste_e??>
     <div class="boutonall">
-        <button  class="bouton" title="Afficher toutes les listes" onclick="alll()">toutes</button>
+        <form action="/listes/all" method="get">
+            <button  class="bouton" title="Afficher toutes les listes" ">toutes</button>
+        </form>
     </div>
+
     </#if>
 </add>
 <br>

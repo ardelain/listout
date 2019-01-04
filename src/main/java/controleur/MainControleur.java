@@ -102,13 +102,34 @@ public class MainControleur {
             get("/connexion", (request, response) -> {
                 StringWriter writer = new StringWriter();
                 try {
+
+                    Map<String, Integer> params = new HashMap<>();
+                    List<Element> le = model.getAllElement();
+                    params.put("isIncription", 0);
+
                     Template template = configuration.getTemplate("templates/connexion.ftl");
-                    template.process(null, writer);
-                    System.out.println(writer);
+                    template.process(params, writer);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return writer;
+            });
+            post("/connexion", (request, response) -> {
+                String email = request.queryParams("email");
+                String mdp = request.queryParams("mdp");
+                String isInscription = request.queryParams("isIncription");
+                if(email != null || mdp != null){
+                    if(Integer.parseInt(isInscription) == 0){
+                        //inscription
+                        //model.insertTableElement(l.getListElement().size()+1,)
+                    }else{
+                        //connection
+                    }
+                }else{
+                    response.redirect("/listes/add");
+                }
+                response.redirect("/listes/all");
+                return "!";
             });
                /*return new ModelAndView(attributes, "src/public/accueil.ftl");
                 }, new FreeMarkerEngine());*/
@@ -165,24 +186,18 @@ public class MainControleur {
                 });
                 get("/all", (request, response) -> {
                     StringWriter writer = new StringWriter();
-                    //model.getListeComposite(1);
-                    final String[] vals3 = {""};
-                    vals3[0] += l;
-                    String finalVals3 = vals3[0];
-
                     Map<String, List<Element>> params = new HashMap<>();
                     List<Element> le = model.getAllElement();
                     params.put("liste_e", le);
                     try {
                         Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                         template.process(params, writer);
-                        System.out.println(finalVals3);
+                        System.out.println(writer);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
                     }
                     return writer;
-                    //return "Listes";
                 });
 
                 //..........................................probleme css/ chargement page -> la regardeger (affiche sans le css ...?)
@@ -194,7 +209,6 @@ public class MainControleur {
                         Map<String, List<Element>> params = new HashMap<>();
                         List<Element> le = new ArrayList<>();le.add(ee);
                         params.put("liste_e", le);
-
                         try {
                             Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                             template.process(params, writer);
@@ -204,24 +218,27 @@ public class MainControleur {
                         }
                         return writer;
                     });
-                    get("/modif", (request, response) -> {
-                        StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
-                        System.out.println("iii "+i);
-                        Element ee;ee = model.getElement(i);
+                    path("/modif", () -> {
+                        get("", (request, response) -> {
+                            //response.type("text/html");
+                            StringWriter writer = new StringWriter();
+                            int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
+                            System.out.println("iii "+i);
+                            Element ee;ee = model.getElement(i);
 
-                        Map<String, List<Element>> params = new HashMap<>();
-                        List<Element> le = new ArrayList<>();le.add(ee);
-                        params.put("liste_e", le);
-
-                        try {
-                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
-                            template.process(params, writer);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return writer;
+                            Map<String, List<Element>> params = new HashMap<>();
+                            List<Element> le = new ArrayList<>();le.add(ee);
+                            params.put("liste_e", le);
+                            try {
+                                Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                                template.process(params, writer);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return writer;
+                        });
                     });
+
                     get("/supp", (request, response) -> {
                         //request.params(":name")
                         return "Liste supp: " + request.params(":name") + " inexistante.";

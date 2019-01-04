@@ -1,6 +1,6 @@
 <#include "header.ftl"/>
 <article>
-    <form class="connexion">
+    <form class="connexion" method="post">
 
     <h3>Connexion</h3>
     <p>
@@ -13,7 +13,7 @@
     </p>
     <p>
         <div class="boutonall">
-            <button  class="bouton" title="Valider" onclick="co()">Valider</button>
+            <button  class="bouton" title="Valider" value="connexion">Valider</button>
         </div>
 
     </p>

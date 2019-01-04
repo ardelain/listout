@@ -1,18 +1,29 @@
+/*header*/
+.nav1 {
+	width: 10%;
+	alignment: left;
+	text-align: left;
+	line-height:30px;
+	outline-width: 30px;
+}
+
+.nav2 {
+	width: 30%;
+}
+/*footer*/
+
 /*connexion*/
 .connexion
-{   position: relative;}
-
-.connexion
-{   display: inline-block;
+{
 	padding : 1px 20px;
 	margin-bottom: 20px;
 	background-color: rgba(255, 255, 255, 1);
 	/*box-shadow: 0px 4px 10px #1c1a19;*/
 	color: black;
-	margin-bottom: 20px;
 	float: left;
 	text-align: center;
-	width: 860px;
+	width: 100%;
+	text-align: center;
 }
 
 
