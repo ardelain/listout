@@ -76,6 +76,7 @@ public class MainBDD {
         el.setDateDerModif(d);
         model.updateElement(1, el.getIdListe(),sdf.format(el.getDateCreation()), sdf.format(el.getDateDerModif()), el.getTitre(), el.getDescription());
         list_e = model.getAllElement();
+        System.out.println("--- "+el.getDateDerModif()+" ---");
 
         /*for (Iterator i = l.getChildren(); i.hasNext(); ) {
             Object objet = i.next();

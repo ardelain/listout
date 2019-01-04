@@ -1,6 +1,8 @@
 package model.test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public abstract class AListe {
 
@@ -8,8 +10,8 @@ public abstract class AListe {
     private String titre;
     private String description;
     private Date dateCreation;
-    private Date dateFin;
     private Date dateDerModif;
+    private List<AListe> children = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -43,14 +45,6 @@ public abstract class AListe {
         this.dateCreation = dateCreation;
     }
 
-    public Date getDateFin() {
-        return dateFin;
-    }
-
-    public void setDateFin(Date dateFin) {
-        this.dateFin = dateFin;
-    }
-
     public Date getDateDerModif() {
         return dateDerModif;
     }
@@ -59,11 +53,28 @@ public abstract class AListe {
         this.dateDerModif = dateDerModif;
     }
 
+    public void add(AListe composant){
+        children.add(composant);
+    }
+
+    public void remove(AListe composant){
+        children.remove(composant);
+    }
+
+    public List<AListe> getListe() {
+        return children;
+    }
+
+    public void setListe(List<AListe> liste) {
+        this.children = liste;
+    }
+
     @Override
-    public String toString() {
-        return "AListe{" +
-                "titre='" + titre + '\'' +
-                ", Description='" + description + '\'' +
-                '}';
+    public String toString(){
+        String vals = "\n" + "</br>Titre: " + titre + "\n" +
+                "</br>Description: " + description + "\n" +
+                //"</br>Liste d'éléments: " + listElement + "\n" +
+                "</br>";
+        return vals;
     }
 }
