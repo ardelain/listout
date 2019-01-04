@@ -1,14 +1,27 @@
 /*header*/
 .nav1 {
-	width: 10%;
+	width: 12.5%;
 	alignment: left;
 	text-align: left;
 	line-height:30px;
 	outline-width: 30px;
 }
+.nav1 img{
+	/*border: 0.5px black solid;*/
+}
+.nav3 {
+	width: 12.5%;
+	alignment: right;
+	text-align: right;
+	line-height:30px;
+	outline-width: 30px;
+}
 
+.nav3 img{
+	/*border: 0.5px black solid;*/
+}
 .nav2 {
-	width: 30%;
+	width: 25%;
 }
 /*footer*/
 

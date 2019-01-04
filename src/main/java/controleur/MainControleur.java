@@ -75,10 +75,10 @@ public class MainControleur {
         //staticFiles.location("src/main/ressources/templates"); // css
 
         // Les routes :
-        /*get("", (request, response) -> {
-            //response.redirect("/accueil");
+        get("/", (request, response) -> {
+            response.redirect("/accueil");
             return "!!";
-        });*/
+        });
         //before("/*", (q, a) -> log.info("Received api call"));
 
         path("/", () -> {
@@ -119,16 +119,29 @@ public class MainControleur {
                 String mdp = request.queryParams("mdp");
                 String isInscription = request.queryParams("isIncription");
                 if(email != null || mdp != null){
-                    if(Integer.parseInt(isInscription) == 0){
+                    /*if(Integer.parseInt(isInscription) == 0){
                         //inscription
                         //model.insertTableElement(l.getListElement().size()+1,)
                     }else{
                         //connection
-                    }
+                    }*/
                 }else{
-                    response.redirect("/listes/add");
+                    response.redirect("/accueil");
                 }
-                response.redirect("/listes/all");
+                response.redirect("/accueil");
+                return "!";
+            });
+            //reunir dans connexion ?
+            post("/inscription", (request, response) -> {
+                String email = request.queryParams("email");
+                String mdp = request.queryParams("mdp");
+                String isInscription = request.queryParams("isIncription");
+                if(email != null || mdp != null){
+
+                }else{
+                    response.redirect("/connexion");
+                }
+                response.redirect("/connexion");
                 return "!";
             });
                /*return new ModelAndView(attributes, "src/public/accueil.ftl");
@@ -159,6 +172,10 @@ public class MainControleur {
                     StringWriter writer = new StringWriter();
                     try {
                         Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                        Map<String, List<Element>> params = new HashMap<>();
+                        List<Element> le = model.getAllElement();
+                        params.put("liste_e", null);
+                        params.put("liste_e_pere", null);
                         template.process(null, writer);
                         System.out.println(writer);
                     } catch (Exception e) {
@@ -170,14 +187,17 @@ public class MainControleur {
                 post("/add", (request, response) -> {
                     String titre = request.queryParams("titre");
                     String description = request.queryParams("description");
-                    String id = request.queryParams("id");
+                    String id = request.queryParams("idd");
                     if(titre != null || description != null){
-                        if(id == null){
+                        //ajout
+                        //model.insertTableElement(l.getListElement().size()+1,)
+
+                        /*if(id == null){
                             //ajout
                             //model.insertTableElement(l.getListElement().size()+1,)
                         }else{
                             //modification
-                        }
+                        }*/
                     }else{
                         response.redirect("/listes/add");
                     }
@@ -189,6 +209,7 @@ public class MainControleur {
                     Map<String, List<Element>> params = new HashMap<>();
                     List<Element> le = model.getAllElement();
                     params.put("liste_e", le);
+                    params.put("liste_seul", null);
                     try {
                         Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                         template.process(params, writer);
@@ -207,8 +228,11 @@ public class MainControleur {
                         int i = -3;i = Integer.parseInt(request.params(":name"));//request.params(":name")
                         Element ee;ee = model.getElement(i);
                         Map<String, List<Element>> params = new HashMap<>();
-                        List<Element> le = new ArrayList<>();le.add(ee);
+                        List<Element> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
+                        List<Element> lee = new ArrayList<>();//future Liste element
                         params.put("liste_e", le);
+                        params.put("table_liste_fils", lee);
+
                         try {
                             Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                             template.process(params, writer);
@@ -229,6 +253,8 @@ public class MainControleur {
                             Map<String, List<Element>> params = new HashMap<>();
                             List<Element> le = new ArrayList<>();le.add(ee);
                             params.put("liste_e", le);
+                            params.put("liste_e_pere", null);
+                            //params.put("id", ""le.get(0).getId());
                             try {
                                 Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
                                 template.process(params, writer);
@@ -237,11 +263,59 @@ public class MainControleur {
                             }
                             return writer;
                         });
+                        post("", (request, response) -> {
+                            String titre = request.queryParams("titre");//request.params("")
+                            String description = request.queryParams("description");//request.params("")
+                            String id = request.queryParams("idd");//request.params("")
+                            if(titre != null || description != null){
+                                //modification
+                                //model.insertTableElement(l.getListElement().size()+1,)
+
+                            }else{
+                                response.redirect("/listes/"+id);
+                            }
+                            response.redirect("/listes/"+id);
+                            return "!";
+                        });
                     });
 
                     get("/supp", (request, response) -> {
                         //request.params(":name")
                         return "Liste supp: " + request.params(":name") + " inexistante.";
+                    });
+                    get("/add", (request, response) -> {
+                        //response.type("text/html");
+                        StringWriter writer = new StringWriter();
+                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
+                        System.out.println("iii "+i);
+                        Element ee;ee = model.getElement(i);
+
+                        Map<String, List<Element>> params = new HashMap<>();
+                        List<Element> le = new ArrayList<>();le.add(ee);
+                        params.put("liste_e", null);
+                        params.put("liste_e_pere", le);
+                        try {
+                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                            template.process(params, writer);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return writer;
+                    });
+
+                    post("/add", (request, response) -> {
+                        String titre = request.queryParams("titre");//request.params("")
+                        String description = request.queryParams("description");//request.params("")
+                        String id = request.queryParams("idd");//request.params("")
+                        if(titre != null || description != null){
+                            //modification
+                            //model.insertTableElement(l.getListElement().size()+1,)
+
+                        }else{
+                            response.redirect("/listes/"+id);
+                        }
+                        response.redirect("/listes/"+id);
+                        return "!";
                     });
                     get("/:name", (request, response) -> {
                         //request.params(":name")

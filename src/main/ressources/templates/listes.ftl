@@ -1,5 +1,4 @@
 <#include "header.ftl"/>
-
 <r>
     <main>
         <div class="recherche">
@@ -15,18 +14,27 @@
     </main>
 </r>
 <add>
-    <div class="boutonaddl">
-        <button  class="bouton" title="Ajouter Liste" onclick="add()">+</button>
-    </div>
-    <br>
-    <br>
+    <#if !table_liste_fils??>
+        <div class="boutonaddl">
+            <button  class="bouton" title="Ajouter Liste" onclick="add()">+</button>
+        </div>
+        <br>
+        <br>
+    <#else>
+        <div class="boutonaddl">
+            <form action="/listes/${liste_e[0].id}/add" method="get">
+                <button  class="bouton" title="Ajouter Liste element" ">+</button>
+            </form>
+        </div>
+        <br>
+        <br>
+    </#if>
     <#if !liste_e??>
     <div class="boutonall">
         <form action="/listes/all" method="get">
             <button  class="bouton" title="Afficher toutes les listes" ">toutes</button>
         </form>
     </div>
-
     </#if>
 </add>
 <br>

@@ -1,12 +1,22 @@
 <#include "header.ftl"/>
+
 <div class="liste">
     <br>
     <br>
-    <label >Nouvelle Liste : </label>
+    <#if liste_e??>
+        <#if liste_e_pere??>
+            <label >Nouvel element : </label>
+        <#else>
+            <label >Modifier Liste/Element :</label>
+        </#if>
+    <#else>
+            <label >Nouvelle Liste : </label>
+    </#if>
     <br>
     <br>
     <form id="liste" method="post">
-        <#if liste_e??>
+        <#if liste_e?? && !liste_e_pere??>
+            <input style="display:none;" id="idd" name="idd" value="${liste_e[0].id}"/></input>
             <table class="table_addliste" >
             <tr >
             <td> <label for="titre">Titre</label></td>
@@ -31,7 +41,6 @@
             </tr>
             </table>
         </#if>
-
         <input type="submit" value="Ajouter"/>
     </form>
 

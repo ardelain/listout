@@ -75,6 +75,7 @@ public class Sql2oModel {
         }
     }
 
+
     public static model.Element getElement(int val){
         try(Connection con = sql2o.open()){
             Table table = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
