@@ -8,19 +8,20 @@
 <body>
 <nav>
     <ul>
-        <li class="nav1" width="100%" height="100%">
-            <a href="/accueil" ><img href="/accueil"  src="/image/abr.png" alt="Logo" title="accueil" height="30" width="30"/></a>
+        <li class="nav1">
+            <a href="/accueil" ><img href="/accueil"  src="/image/abr.png" alt="Logo" title="accueil" height="30px" width="30px"/></a>
         </li>
         <li class="nav2">
             <a href="/accueil">Acceuil</a>
-
         </li>
         <li class="nav2">
             <a href="/listes">Listes</a>
         </li>
-
         <li class="nav2">
             <a href="/info">Info</a>
+        </li>
+        <li class="nav3">
+            <a href="/connexion" ><img href="/accueil"  src="/image/connexion.png" alt="Logo" title="accueil" height="30px" width="30px"/></a>
         </li>
     </ul>
 </nav>
