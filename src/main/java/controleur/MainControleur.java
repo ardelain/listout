@@ -106,6 +106,8 @@ public class MainControleur {
                     //return render("accueil.ftl", model);
                     //return "Test 1 Page: " + request.params(":name") + " inexistante.";
                 });*/
+
+
             path("/listes", () -> {
                 get("", (request, response) -> {
                     StringWriter writer = new StringWriter();
@@ -172,84 +174,48 @@ public class MainControleur {
                     //return "Listes";
                 });
 
-               /* get("/:name/modif", (request, response) -> {
-                    int i = -3;
-                    i = Integer.parseInt(request.params(":name"));
-                    Element ee;
-                    ee = model.getElement(i);
-
-                    StringWriter writer = new StringWriter();
-                    //model.getListeComposite(1);
-                    final String[] vals3 = {""};
-                    vals3[0] += l;
-                    String finalVals3 = vals3[0];
-
-                    Map<String, List<Element>> params = new HashMap<>();
-                    List<Element> le = new ArrayList<>();//= model.getAllElement();
-                    le.add(ee);
-                    params.put("liste_e", le);
-                    try {
-                        Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
-                        template.process(params, writer);
-                        System.out.println(finalVals3);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
-                    return writer;
-                });*/
-
-                get("/:name", (request, response) -> {
-
-                    int i = -3;
-                    i = Integer.parseInt(request.params(":name"));
-                    Element ee;
-                    ee = model.getElement(i);
-
-                    StringWriter writer = new StringWriter();
-                    //model.getListeComposite(1);
-                    final String[] vals3 = {""};
-                    vals3[0] += l;
-                    String finalVals3 = vals3[0];
-
-                    Map<String, List<Element>> params = new HashMap<>();
-                    List<Element> le = new ArrayList<>();//= model.getAllElement();
-                    le.add(ee);
-                    params.put("liste_e", le);
-                    try {
-                        Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
-                        template.process(params, writer);
-                        System.out.println(finalVals3);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
-                    return writer;
-                });
-
                 //..........................................probleme css/ chargement page -> la regardeger (affiche sans le css ...?)
-                path("/:name/", () -> {
-                    get("modif", (request, response) -> {
+                path("/:name", () -> {
+                    get("", (request, response) -> {
                         StringWriter writer = new StringWriter();
+                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.params(":name")
+                        Element ee;ee = model.getElement(i);
                         Map<String, List<Element>> params = new HashMap<>();
-                        List<Element> le = model.getAllElement();
+                        List<Element> le = new ArrayList<>();le.add(ee);
                         params.put("liste_e", le);
 
                         try {
-                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                            Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                             template.process(params, writer);
-                            System.out.println(writer);
                         } catch (Exception e) {
                             // TODO: handle exception
                             e.printStackTrace();
                         }
                         return writer;
                     });
-                    get("supp", (request, response) -> {
+                    get("/modif", (request, response) -> {
+                        StringWriter writer = new StringWriter();
+                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
+                        System.out.println("iii "+i);
+                        Element ee;ee = model.getElement(i);
+
+                        Map<String, List<Element>> params = new HashMap<>();
+                        List<Element> le = new ArrayList<>();le.add(ee);
+                        params.put("liste_e", le);
+
+                        try {
+                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                            template.process(params, writer);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return writer;
+                    });
+                    get("/supp", (request, response) -> {
                         //request.params(":name")
                         return "Liste supp: " + request.params(":name") + " inexistante.";
                     });
-                    get(":name", (request, response) -> {
+                    get("/:name", (request, response) -> {
                         //request.params(":name")
                         return "Liste name: " + request.params(":name") + " inexistante.";
                     });

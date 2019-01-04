@@ -75,17 +75,17 @@
                     <td>
                         <div class="zone" title="Etat"></div>
                     </td>
-                    <form action="/listes/${e.id}/add" method="post">
+                    <form action="/listes/${e.id}/add" method="get">
                         <td>
                             <button class="bouton1" title="Ajouter Element" >+</button>
                         </td>
                     </form>
-                    <form action="/listes/${e.id}/supp" method="post">
+                    <form action="/listes/${e.id}/supp" method="get">
                         <td>
                             <button class="bouton2" title="Supprimer Element">-</button>
                         </td>
                     </form>
-                        <form action="/listes/${e.id}/modif" method="post">
+                        <form action="/listes/${e.id}/modif" method="get">
                         <td>
                             <button class="bouton3" title="Modifier Element">.</button>
                         </td>
@@ -120,17 +120,17 @@
             <td>
                 <div class="zone" title="Etat"></div>
             </td>
-            <form action="/listes/${e.id}/add" method="post">
+            <form action="/listes/${e.id}/add" method="get">
                     <td>
                         <button class="bouton1" title="Ajouter Element" >+</button>
                     </td>
                 </form>
-            <form action="/listes/${e.id}/supp" method="post">
+            <form action="/listes/${e.id}/supp" method="get">
                     <td>
                         <button class="bouton2" title="Supprimer Element">-</button>
                     </td>
                 </form>
-            <form action="/listes/${e.id}/modif" method="post">
+            <form action="/listes/${e.id}/modif" method="get">
                 <td>
                     <button class="bouton3" title="Modifier Element">.</button>
                 </td>
