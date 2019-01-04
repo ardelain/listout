@@ -3,12 +3,8 @@ package model;
 import java.util.Date;
 
 public class Element {
-<<<<<<< HEAD
     private int id;
     private int idListe;
-=======
-    private int id = -1;
->>>>>>> e2cb9ea7926854b34efd9d901ba618a4e0e65ad5
     private Date dateCreation;
     private Date dateDerModif;
     private String titre;
@@ -55,21 +51,13 @@ public class Element {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String vals = "\n" + "</br>DateCreation: " + dateCreation + "\n" +
                 "</br>DateDerModif: " + dateDerModif + "\n" +
                 "</br>Titre: " + titre + "\n" +
                 "</br>Description: " + description + "\n" +
                 "</br>";
         return vals;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getIdListe() {

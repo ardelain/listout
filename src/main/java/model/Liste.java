@@ -7,17 +7,16 @@ public class Liste implements Composant {
     private String titre;
     private String description;
     private List<Element> listElement;
-    private int id = -1;
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
-
-
 
     @Override
     public String getTitre() {
@@ -55,15 +54,5 @@ public class Liste implements Composant {
                 "</br>Liste d'éléments: " + listElement + "\n" +
                 "</br>";
         return vals;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
     }
 }

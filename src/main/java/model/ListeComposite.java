@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ListeComposite implements Composant {
-    private int id = -1;
     private Collection children = new ArrayList();
     private int id;
     private String titre;
@@ -83,10 +82,12 @@ public class ListeComposite implements Composant {
         return result.toString();
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -120,15 +121,5 @@ public class ListeComposite implements Composant {
                 "\t" + "</br>Sous-liste: " + children +
                 "</br>";
         return vals;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
     }
 }
