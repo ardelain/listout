@@ -3,6 +3,7 @@ package model;
 import java.util.Date;
 
 public class Element {
+    private int id = -1;
     private Date dateCreation;
     private Date dateDerModif;
     private String titre;
@@ -14,6 +15,14 @@ public class Element {
 
     public Date getDateDerModif() {
         return dateDerModif;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitre() {

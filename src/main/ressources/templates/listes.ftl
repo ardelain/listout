@@ -9,15 +9,15 @@
 <nav>
     <ul>
         <li>
-            <a href="">Acceuil</a>
+            <a href="/accueil">Acceuil</a>
 
         </li>
         <li>
-            <a href="">Listes</a>
+            <a href="/listes">Listes</a>
         </li>
 
         <li>
-            <a href="">Info</a>
+            <a href="/info">Info</a>
         </li>
     </ul>
 </nav>
@@ -36,49 +36,136 @@
         </div>
     </main>
 </r>
+<add>
+    <div class="boutonaddl">
+        <button  class="bouton" title="Ajouter Liste" onclick="add()">+</button>
+    </div>
+    <br>
+    <br>
+    <#if !liste_e??>
+    <div class="boutonall">
+        <button  class="bouton" title="Afficher toutes les listes" onclick="alll()">all</button>
+    </div>
+    </#if>
+</add>
+<br>
 <listes>
     <table class="table_liste">
         <tbody>
-            <tr class="element">
-                <td>
-                <td><a href=""><img src=""  /></a></td>
-                <td>
-                    <div class="comment">
-                        <div class="message">
-                            <div class="author">
-                                <a class="titre" href="">Le titre</a>
-                                <span class="date">- 01/12/2017</span>
+        <#if liste_e??>
+            <#list liste_e as e>
+                <tr class="element">
+                    <td>
+                    <td><a href=""><img src="" /></a></td>
+                    <td>
+                        <div class="comment">
+                            <div class="message">
+                                <div class="author">
+                                    <a class="titre" href="${e.id}">${e.titre}</a>
+                                    <span class="date">${e.dateCreation}</span>
+                                </div>
+                                <p class="content">
+                                         ${e.description}
+                                </p>
                             </div>
-                            <p class="content">
-                                ...text...
-                            </p>
                         </div>
-                    </div>
-                </td>
-                </td>
-                <td width="30%">
+                    </td>
+                    </td>
+                    <td width="30%">
+                    <td>
+                        <div class="zone" title="Etat"></div>
+                    </td>
+                    <form action="/listes/${e.id}/add" method="post">
+                        <td>
+                            <button class="bouton1" title="Ajouter Element" >+</button>
+                        </td>
+                    </form>
+                    <form action="/listes/${e.id}/supp" method="post">
+                        <td>
+                            <button class="bouton2" title="Supprimer Element">-</button>
+                        </td>
+                    </form>
+                        <form action="/listes/${e.id}/modif" method="post">
+                        <td>
+                            <button class="bouton3" title="Modifier Element">.</button>
+                        </td>
+                    </form>
+                    </td>
+                </tr>
+            <#else>
+            </#list>
+        </#if>
+        </table>
+        <table class="table_liste_fils">
+        <#if liste_e_fils??>
+            <#list liste_e_fils as e>
+                <tr class="element_fils">
                 <td>
-                    <div class="zone" title="Etat"></div>
-                </td>
+                <td><a href=""><img src="" /></a></td>
                 <td>
-                    <button class="bouton1" title="Ajouter Element">+</button>
+                <div class="comment">
+                <div class="message">
+                <div class="author">
+                <a class="titre" href="${e.id}">${e.titre}</a>
+                <span class="date">${e.dateCreation}</span>
+                </div>
+                <p class="content">
+                ${e.description}
+                </p>
+                </div>
+                </div>
                 </td>
-                <td>
-                    <button class="bouton2" title="Supprimer Element">-</button>
-                </td>
+            </td>
+            <td width="30%">
+            <td>
+                <div class="zone" title="Etat"></div>
+            </td>
+            <form action="/listes/${e.id}/add" method="post">
+                    <td>
+                        <button class="bouton1" title="Ajouter Element" >+</button>
+                    </td>
+                </form>
+            <form action="/listes/${e.id}/supp" method="post">
+                    <td>
+                        <button class="bouton2" title="Supprimer Element">-</button>
+                    </td>
+                </form>
+            <form action="/listes/${e.id}/modif" method="post">
                 <td>
                     <button class="bouton3" title="Modifier Element">.</button>
                 </td>
+                </form>
                 </td>
-            </tr>
+                </tr>
+            <#else>
+            </#list>
+        </#if>
         </tbody>
+
     </table>
 </listes>
+<br>
+<br>
+<br>
 <footer>
     <p><br>
+        Arthur DELAIN & Floran CHAZELAS
         <br>
         <br>
-        Nous suivre :</p>
+    </p>
 </footer>
+
+<script>
+    function myFunction() {
+        //<p id="demo"></p>
+        document.getElementById("demo").innerHTML = "Hello World";
+    }
+    function add() {
+        location.replace("/listes/add")
+    }
+    function alll() {
+        location.replace("/listes/all")
+    }
+</script>
 </body>
 </html>

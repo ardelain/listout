@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ListeComposite implements Composant {
+    private int id = -1;
     private Collection children = new ArrayList();
     private String titre;
     private String description;
@@ -79,6 +80,14 @@ public class ListeComposite implements Composant {
 
         result.append(" )");
         return result.toString();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
