@@ -23,6 +23,33 @@
 .nav2 {
 	width: 25%;
 }
+
+
+
+
+
+
+
+/*******Background Menus */
+#menu li
+{   background-image:linear-gradient(#454545,#646464); }
+
+/* menus */
+#menu li li
+{   background:#646464; }
+
+/* Background hover */
+#menu li:hover, #menu li li:hover
+{   background:#646464; }
+
+li
+{   background: #646464;
+	transition-duration: 1s;  }
+
+/* Liens */
+#menu a
+{ display:block; }
+
 /*footer*/
 
 /*connexion*/
