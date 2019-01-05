@@ -6,6 +6,13 @@
 	line-height:30px;
 	outline-width: 30px;
 }
+
+header
+{
+	background-size: cover;
+	height:350px;
+}
+
 .nav1 img{
 	/*border: 0.5px black solid;*/
 }
@@ -24,21 +31,12 @@
 	width: 25%;
 }
 
-
-
-
-
-
-
-/*******Background Menus */
+	/*******Background Menus */
+	/* menus */
 #menu li
-{   background-image:linear-gradient(#454545,#646464); }
+{   background-image:linear-gradient(#646464,#646464); }
 
-/* menus */
-#menu li li
-{   background:#646464; }
-
-/* Background hover */
+	/* Background hover */
 #menu li:hover, #menu li li:hover
 {   background:#646464; }
 
@@ -46,7 +44,7 @@ li
 {   background: #646464;
 	transition-duration: 1s;  }
 
-/* Liens */
+	/* Liens */
 #menu a
 { display:block; }
 
@@ -66,6 +64,16 @@ li
 	text-align: center;
 }
 
+footer
+{background-color: rgba(100,100,100,0.9);
+	border-style: solid;
+	border-color: black;
+	border-width: 2px;
+	width:100%;
+	margin:auto;
+	text-align: center;
+	color: white;
+}
 
 /*Accueil style*/
 .presentation{
@@ -111,23 +119,6 @@ body
 	width: 100%;
 	}	
 
-
-footer
-	{background-color: rgba(100,100,100,0.9);
-	 border-style: solid;
-	 border-color: black;
-	 border-width: 2px;
-	 width:100%;
-	 margin:auto;
-	 text-align: center;
-	 color: white;
-	 }
-
-header
-	{
-	background-size: cover;
-	height:350px;
-	}
 h3
 	{font-family: cursive;
 	text-align: center;}
