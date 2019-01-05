@@ -1,4 +1,4 @@
-package model.test;
+package model;
 
 import java.util.ArrayList;
 import java.util.Date;

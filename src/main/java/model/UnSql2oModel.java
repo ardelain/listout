@@ -1,4 +1,4 @@
-package model.test;
+package model;
 
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -139,111 +139,6 @@ public class UnSql2oModel {
                     .addParameter("idListe", idListe)
                     .addParameter("dateCreation", dateCreation)
                     .addParameter("dateDerModif", dateDerModif)
-                    .addParameter("titre", titre)
-                    .addParameter("description", description)
-                    .executeUpdate();
-        }
-    }
-
-    public static void createTableListe(){
-        try(Connection con = sql2o.open()){
-            con.createQuery("CREATE TABLE LISTE " +
-                    "(id INTEGER not NULL, " +
-                    "titre VARCHAR(255), " +
-                    "description VARCHAR(255), " +
-                    "PRIMARY KEY ( id ));").executeUpdate();
-        }
-    }
-    /*   "dateCreation DATE, " +
-                    "dateDerModif DATE, " +*/
-
-    public static void insertTableListe(int id, String titre, String description){//, String d, String d2
-        try(Connection con = sql2o.open()){
-            con.createQuery("INSERT INTO LISTE(id, titre, description) VALUES (:id, :titre, :description)")//, dateCreation, dateDerModif//, :d,:d2
-                    .addParameter("id", id)
-                    .addParameter("titre", titre)
-                    .addParameter("description", description)
-                    //.addParameter("dateCreation", d)
-                    //.addParameter("dateDerModif", d2)
-                    .executeUpdate();
-        }
-    }
-
-    public static AListe getListe(int val){
-        try(Connection con = sql2o.open()) {
-            Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
-            int v = val - 1;
-            Date d = new Date();//...................................................................................................................................Integrer date au liste normale !!!
-            AListe l = new LaListe();
-            List<AListe> list_e = new LinkedList<>();
-
-            l.setId((int) table.rows().get(v).getObject("id"));
-            l.setTitre((String) table.rows().get(v).getObject("titre"));
-            l.setDescription((String) table.rows().get(v).getObject("description"));
-            //l.setDateCreation((Date) table.rows().get(v).getObject("datecreation"));
-            //l.setDateDerModif((Date) table.rows().get(v).getObject("datedermodif"));
-
-
-            Table table2 = con.createQuery("SELECT * FROM ELEMENT WHERE idliste = :val")
-                    .addParameter("val", val)
-                    .executeAndFetchTable();
-
-            for (Row row : table2.rows()) {
-                AListe element = new UnElement();
-                element.setId((int) row.getObject("id"));
-                element.setTitre((String) row.getObject("titre"));
-                element.setDescription((String) row.getObject("description"));
-                element.setDateCreation((Date) row.getObject("datecreation"));
-                element.setDateDerModif((Date) row.getObject("datedermodif"));
-                element.setId((int) row.getObject("id"));
-                list_e.add(element);
-            }
-            ((LaListe) l).setListe(list_e);
-            //l.setListElement(list_e);
-
-            return l;
-        }
-    }
-
-    public static AListe getAllList(){
-        try(Connection con = sql2o.open()) {
-            Table table = con.createQuery("SELECT * FROM LISTE").executeAndFetchTable();
-            AListe all = new LaListe();
-            AListe l = new LaListe();
-            List<AListe> list_e = new LinkedList<>();
-            for (Row ro : table.rows()) {
-                int v = (int) ro.getObject("id");
-                l.setId((int) ro.getObject("id"));
-                l.setTitre((String) ro.getObject("titre"));
-                l.setDescription((String) ro.getObject("description"));
-
-
-                Table table2 = con.createQuery("SELECT * FROM ELEMENT WHERE idliste = :val")
-                        .addParameter("val", v)
-                        .executeAndFetchTable();
-
-                for (Row row : table2.rows()) {
-                    AListe element = new UnElement();
-                    element.setId((int) row.getObject("id"));
-                    element.setTitre((String) row.getObject("titre"));
-                    element.setDescription((String) row.getObject("description"));
-                    element.setDateCreation((Date) row.getObject("datecreation"));
-                    element.setDateDerModif((Date) row.getObject("datedermodif"));
-                    element.setId((int) row.getObject("id"));
-                    list_e.add(element);
-                }
-                ((LaListe) l).getListe().addAll(list_e);
-                ((LaListe) all).getListe().add(l);
-                //l.setListElement(list_e);
-            }
-            return all;
-        }
-    }
-
-    public static void updateListe(int id, String titre, String description, List<AListe> listElement){
-        try(Connection con = sql2o.open()){
-            con.createQuery("UPDATE LISTE SET titre = :titre, description = :description WHERE id = :id")
-                    .addParameter("id", id)
                     .addParameter("titre", titre)
                     .addParameter("description", description)
                     .executeUpdate();

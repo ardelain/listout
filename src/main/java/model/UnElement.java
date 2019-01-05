@@ -1,7 +1,6 @@
-package model.test;
+package model;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class UnElement extends AListe{
 

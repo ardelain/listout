@@ -1,25 +1,16 @@
 package controleur;
 
 import freemarker.template.*;
-import model.Composant;
-import model.Element;
-import model.ListeComposite;
-import model.Sql2oModel;
-import model.test.AListe;
-import model.test.LaListe;
-import model.test.UnSql2oModel;
+import model.AListe;
+import model.LaListe;
+import model.UnSql2oModel;
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.template.freemarker.FreeMarkerEngine;
 
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static spark.Spark.*;
@@ -27,11 +18,6 @@ import static spark.Spark.internalServerError;
 
 public class MainControleur {
     Configuration configuration = new Configuration(Configuration.VERSION_2_3_19);
-    //Sql2oModel model;
-
-    ListeComposite l;
-    //List<Element> list_e ;
-
     LaListe list_e;
     UnSql2oModel model;
 
@@ -151,8 +137,8 @@ public class MainControleur {
                 response.redirect("/accueil");
                 return "!";
             });
-            //reunir dans connexion ?
-            post("/inscription", (request, response) -> {
+
+            post("/inscription", (request, response) -> {//reunir dans connexion ?
                 String email = request.queryParams("email");
                 String mdp = request.queryParams("mdp");
                 String isInscription = request.queryParams("isIncription");
@@ -164,15 +150,7 @@ public class MainControleur {
                 response.redirect("/connexion");
                 return "!";
             });
-               /*return new ModelAndView(attributes, "src/public/accueil.ftl");
-                }, new FreeMarkerEngine());*/
-                /*get("/:name", (request, response) -> {
-
-                    //return render("accueil.ftl", model);
-                    //return "Test 1 Page: " + request.params(":name") + " inexistante.";
-                });*/
-
-            /*--------------------------------------------------------------------------------------------------------------------------------------------*/
+            /*LES LISTES--------------------------------------------------------------------------------------------------------------------------------------------*/
             path("/listes", () -> {
                 get("", (request, response) -> {
                     StringWriter writer = new StringWriter();
@@ -198,7 +176,7 @@ public class MainControleur {
                     StringWriter writer = new StringWriter();
                     try {
                         Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
-                        Map<String, List<Element>> params = new HashMap<>();
+                        Map<String, List<AListe>> params = new HashMap<>();
                         List<AListe> le = model.getAllElement();
                         params.put("liste_e", null);
                         params.put("liste_e_pere", null);
@@ -404,9 +382,9 @@ public class MainControleur {
 
             });
 
-            model.getListe(1);
+            model.getAllElement();
             final String[] vals3 = {""};
-            vals3[0] += l;
+            vals3[0] += list_e;
             String finalVals3 = vals3[0];
             get("/all", (req, res) -> finalVals3);
 
