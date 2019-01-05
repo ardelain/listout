@@ -163,34 +163,23 @@ listes table {
 	alignment: center;
 	text-align: center;
 	background-color: rgba(255, 255, 255, 0.9);
-	border-style: solid;
-	border-color: black;
-	border-width: 1px;
 	width:80%;
 	margin:auto;
+	border-collapse: collapse;
+}
+
+
+.table_liste tr{
+	border-style: solid;
+	border-color: black;
+	border-width: 4px;
 	text-align: center;
 	border-collapse: collapse;
 }
-
-listes table tr {
+.table_liste_fils tr{
 	border-style: solid;
 	border-color: black;
-	border-width: 1px;
-	border-collapse: collapse;
-}
-
-table_liste_fils .element{
-	border-style: solid;
-	border-color: black;
-	border-width: 1px;
-	text-align: center;
-	border-collapse: collapse;
-}
-
-tr .element{
-	border-style: solid;
-	border-color: black;
-	border-width: 3px;
+	border-width: 2px;
 	text-align: center;
 	border-collapse: collapse;
 }

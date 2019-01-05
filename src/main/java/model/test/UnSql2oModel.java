@@ -82,7 +82,7 @@ public class UnSql2oModel {
             List<AListe> list_e = new LinkedList<>();
             for (Row row : table.rows()) {
                 AListe element = new UnElement();
-                element.setId((int) row.getObject("idListe"));
+                element.setId((int) row.getObject("id"));
                 element.setTitre((String) row.getObject("titre"));
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
@@ -96,7 +96,7 @@ public class UnSql2oModel {
     public static List<Integer> getAllPossede(int val){
         try(Connection con = sql2o.open()){
             List<Integer> li = new ArrayList<>();
-            Table table = con.createQuery("SELECT * FROM POSSEDE WHERE id = :val").addParameter("val", val).executeAndFetchTable();
+            Table table = con.createQuery("SELECT * FROM POSSEDE WHERE idliste = :val").addParameter("val", val).executeAndFetchTable();
             List<AListe> list_e = new LinkedList<>();
             for (Row row : table.rows()) {
                 li.add((int) row.getObject("id"));
@@ -108,7 +108,7 @@ public class UnSql2oModel {
     public static List<Integer> getAllPossedant(int val){
         try(Connection con = sql2o.open()){
             List<Integer> li = new ArrayList<>();
-            Table table = con.createQuery("SELECT * FROM POSSEDE WHERE idliste = :val").addParameter("val", val).executeAndFetchTable();
+            Table table = con.createQuery("SELECT * FROM POSSEDE WHERE id = :val").addParameter("val", val).executeAndFetchTable();
             List<AListe> list_e = new LinkedList<>();
             for (Row row : table.rows()) {
                 li.add((int) row.getObject("idListe"));

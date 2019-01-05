@@ -35,7 +35,11 @@ public class LaListe extends AListe{
     public static List<AListe> rechercheFils(UnSql2oModel sql, List<AListe> liste,int id){
         List<AListe> l = new ArrayList<>();
         for(int i : sql.getAllPossede(id)){
-            l.add(liste.get(liste.indexOf(i)));
+            for (AListe a: liste) {
+                if(a.getId() == i){
+                    l.add(a);
+                }
+            }
         }
         return l;
     }
@@ -43,7 +47,12 @@ public class LaListe extends AListe{
     public static List<AListe> recherchePere(UnSql2oModel sql, List<AListe> liste,int id){
         List<AListe> l = new ArrayList<>();
         for(int i : sql.getAllPossedant(id)){
-            l.add(liste.get(liste.indexOf(i)));
+            for (AListe a: liste) {
+                if(a.getId() == i){
+                    l.add(a);
+                }
+            }
+            //l.add(liste.get(liste.indexOf(i)));
         }
         return l;
     }

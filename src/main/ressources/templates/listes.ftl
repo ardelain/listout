@@ -14,7 +14,7 @@
     </main>
 </r>
 <add>
-    <#if !table_liste_fils??>
+    <#if !liste_e_fils??>
         <div class="boutonaddl">
             <x>Listes :</x>
             <form action="/listes/add" method="get">
@@ -26,7 +26,7 @@
     <#else>
         <div class="boutonaddl">
              <x>Liste :</x>
-            <form action="/listes/${liste_e[0].id}/add" method="get">
+            <form action="/listes/${liste_e[0].id?replace(",","")}/add" method="get">
                 <button  class="bouton" title="Ajouter Liste element" ">+</button>
             </form>
         </div>
@@ -45,96 +45,97 @@
 <listes>
     <table class="table_liste">
         <tbody>
-        <#if liste_e??>
-            <#list liste_e as e>
-                <tr class="element">
+            <#if liste_e??>
+                <#list liste_e as e>
+                    <tr class="element">
+                        <td>
+                        <td><a href=""><img src="" /></a></td>
+                        <td>
+                            <div class="comment">
+                                <div class="message">
+                                    <div class="author">
+                                        <a class="titre" href="${e.id?replace(",","")}">${e.titre}</a>
+                                        <span class="date">${e.dateCreation}</span>
+                                    </div>
+                                    <p class="content">
+                                             ${e.description}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        </td>
+                        <td width="30%">
+                        <td>
+                            <div class="zone" title="Etat"></div>
+                        </td>
+                        <form action="/listes/${e.id?replace(",","")}/add" method="get">
+                            <td>
+                                <button class="bouton1" title="Ajouter Element" >+</button>
+                            </td>
+                        </form>
+                        <form action="/listes/${e.id?replace(",","")}/supp" method="get">
+                            <td>
+                                <button class="bouton2" title="Supprimer Element">-</button>
+                            </td>
+                        </form>
+                            <form action="/listes/${e.id?replace(",","")}/modif" method="get">
+                            <td>
+                                <button class="bouton3" title="Modifier Element">.</button>
+                            </td>
+                        </form>
+                        </td>
+                    </tr>
+                <#else>
+                </#list>
+            </#if>
+        </tbody>
+        </table>
+        <table class="table_liste_fils">
+            <tbody>
+            <#if liste_e_fils??>
+                <#list liste_e_fils as e>
+                    <tr class="element">
                     <td>
                     <td><a href=""><img src="" /></a></td>
                     <td>
-                        <div class="comment">
-                            <div class="message">
-                                <div class="author">
-                                    <a class="titre" href="${e.id}">${e.titre}</a>
-                                    <span class="date">${e.dateCreation}</span>
-                                </div>
-                                <p class="content">
-                                         ${e.description}
-                                </p>
-                            </div>
-                        </div>
+                    <div class="comment">
+                    <div class="message">
+                    <div class="author">
+                    <a class="titre" href="${e.id?replace(",","")}">${e.titre}</a>
+                    <span class="date">${e.dateCreation}</span>
+                    </div>
+                    <p class="content">
+                    ${e.description}
+                    </p>
+                    </div>
+                    </div>
                     </td>
-                    </td>
-                    <td width="30%">
-                    <td>
-                        <div class="zone" title="Etat"></div>
-                    </td>
-                    <form action="/listes/${e.id}/add" method="get">
+                </td>
+                <td width="30%">
+                <td>
+                    <div class="zone" title="Etat"></div>
+                </td>
+                <form action="/listes/${e.id?replace(",","")}/add" method="get">
                         <td>
                             <button class="bouton1" title="Ajouter Element" >+</button>
                         </td>
                     </form>
-                    <form action="/listes/${e.id}/supp" method="get">
+                <form action="/listes/${e.id?replace(",","")}/supp" method="get">
                         <td>
                             <button class="bouton2" title="Supprimer Element">-</button>
                         </td>
                     </form>
-                        <form action="/listes/${e.id}/modif" method="get">
-                        <td>
-                            <button class="bouton3" title="Modifier Element">.</button>
-                        </td>
+                <form action="/listes/${e.id?replace(",","")}/modif" method="get">
+                    <td>
+                        <button class="bouton3" title="Modifier Element">.</button>
+                    </td>
                     </form>
                     </td>
-                </tr>
-            <#else>
-            </#list>
-        </#if>
-        </table>
-        <table class="table_liste_fils">
-        <#if liste_e_fils??>
-            <#list liste_e_fils as e>
-                <tr class="element_fils">
-                <td>
-                <td><a href=""><img src="" /></a></td>
-                <td>
-                <div class="comment">
-                <div class="message">
-                <div class="author">
-                <a class="titre" href="${e.id}">${e.titre}</a>
-                <span class="date">${e.dateCreation}</span>
-                </div>
-                <p class="content">
-                ${e.description}
-                </p>
-                </div>
-                </div>
-                </td>
-            </td>
-            <td width="30%">
-            <td>
-                <div class="zone" title="Etat"></div>
-            </td>
-            <form action="/listes/${e.id}/add" method="get">
-                    <td>
-                        <button class="bouton1" title="Ajouter Element" >+</button>
-                    </td>
-                </form>
-            <form action="/listes/${e.id}/supp" method="get">
-                    <td>
-                        <button class="bouton2" title="Supprimer Element">-</button>
-                    </td>
-                </form>
-            <form action="/listes/${e.id}/modif" method="get">
-                <td>
-                    <button class="bouton3" title="Modifier Element">.</button>
-                </td>
-                </form>
-                </td>
-                </tr>
-            <#else>
-            </#list>
-        </#if>
+                    </tr>
+                <#else>
+                </#list>
+            </#if>
         </tbody>
-
     </table>
 </listes>
 <br>

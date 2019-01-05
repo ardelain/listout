@@ -71,8 +71,6 @@ public class MainControleur {
         // root is 'src/main/resources', so put files in 'src/main/resources/public'
         staticFiles.expireTime(600); // ten minutes
 
-        /*--------------*/
-
         configuration = new Configuration(Configuration.VERSION_2_3_19);//new Configuration(new Version(2, 3, 0));
         configuration.setDirectoryForTemplateLoading(new File("src/main/ressources"));//MainControleur.class, "/"//new File("src/main/ressources/")
         //configuration.setClassForTemplateLoading(MainControleur.class, "src/main/ressources");
@@ -81,9 +79,7 @@ public class MainControleur {
         configuration.setLogTemplateExceptions(false);
 
         externalStaticFileLocation("src/main/ressources");
-        //staticFileLocation("/css");
-        //staticFiles.externalLocation("/css/");
-        //staticFiles.location("src/main/ressources/templates"); // css
+        /*--------------*/
 
         // Les routes :
         get("/", (request, response) -> {
@@ -93,6 +89,7 @@ public class MainControleur {
         //before("/*", (q, a) -> log.info("Received api call"));
 
         path("/", () -> {
+        /*--------------------------------------------------------------------------------------------------------------------------------------------*/
             get("/accueil", (request, response) -> {
                 StringWriter writer = new StringWriter();
                 Map<String, Object> attributes = new HashMap<>();
@@ -110,6 +107,21 @@ public class MainControleur {
                 }
                 return writer;
             });
+            /*--------------------------------------------------------------------------------------------------------------------------------------------*/
+            get("/info", (request, response) -> {
+                StringWriter writer = new StringWriter();
+                try {
+                    Template template = configuration.getTemplate("templates/info.ftl");//render("accueil.ftl", model);
+                    template.process(null, writer);
+                    System.out.println(writer);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                }
+                return writer;
+                //return "info";
+            });
+            /*--------------------------------------------------------------------------------------------------------------------------------------------*/
             get("/connexion", (request, response) -> {
                 StringWriter writer = new StringWriter();
                 try {
@@ -160,7 +172,7 @@ public class MainControleur {
                     //return "Test 1 Page: " + request.params(":name") + " inexistante.";
                 });*/
 
-
+            /*--------------------------------------------------------------------------------------------------------------------------------------------*/
             path("/listes", () -> {
                 get("", (request, response) -> {
                     StringWriter writer = new StringWriter();
@@ -176,6 +188,7 @@ public class MainControleur {
                     return writer;
                     //return "Liste : " + request.params(":name") + " inexistante.";
                 });
+                //ADD................................................................................................................................
                 get("/add", (request, response) -> {
                     StringWriter writer = new StringWriter();
                     try {
@@ -218,12 +231,13 @@ public class MainControleur {
                     }
                     return "! add !";
                 });
+                //TOUT AFFICHER................................................................................................................................
                 get("/all", (request, response) -> {
                     StringWriter writer = new StringWriter();
                     Map<String, List<AListe>> params = new HashMap<>();
                     List<AListe> le = rechercheMere();//model.getAllElement();
                     params.put("liste_e", le);
-                    params.put("liste_seul", null);
+                    params.put("liste_e_fils", null);
                     try {
                         Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                         template.process(params, writer);
@@ -235,8 +249,14 @@ public class MainControleur {
                     return writer;
                 });
 
-                //..........................................probleme css/ chargement page -> la regardeger (affiche sans le css ...?)
+                //SUPPRIMER LISTE................................................................................................................................
+                delete("/:name", (request, response) -> {
+                    //request.params(":name")
+                    return "Liste name: " + request.params(":name") + " inexistante.";
+                });
+                //................................................................................................................................
                 path("/:name", () -> {
+                    //AFFICHAGE LISTE................................................................................................................................!!!!!!!!!!! ELEMENTS
                     get("", (request, response) -> {
                         list_e.setListe(model.getAllElement());
                         StringWriter writer = new StringWriter();
@@ -247,16 +267,16 @@ public class MainControleur {
                         List<AListe> lee = new ArrayList<>();//future Liste element
                         lee.addAll(LaListe.rechercheFils(model,list_e.getListe(),ee.getId()));
                         params.put("liste_e", le);
-                        params.put("table_liste_fils", lee);
+                        params.put("liste_e_fils", lee);
                         try {
                             Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                             template.process(params, writer);
                         } catch (Exception e) {
-                            // TODO: handle exception
                             e.printStackTrace();
                         }
                         return writer;
                     });
+                    //MODIFICATION................................................................................................................................
                     path("/modif", () -> {
                         get("", (request, response) -> {
                             //response.type("text/html");
@@ -287,28 +307,24 @@ public class MainControleur {
                                 //model.insertTableElement(l.getListElement().size()+1,)
 
                             }else{
-                                response.redirect("/listes/"+id);
+                                response.redirect("/listes/"+Integer.parseInt(id));
                             }
-                            response.redirect("/listes/"+id);
+                            response.redirect("/listes/"+Integer.parseInt(id));
                             return "!";
                         });
                     });
 
-                    get("/supp", (request, response) -> {
-                        //request.params(":name")
-                        return "Liste supp: " + request.params(":name") + " inexistante.";
-                    });
+                    //AJOUT ELEMENT................................................................................................................................
                     get("/add", (request, response) -> {
                         //response.type("text/html");
                         StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
-                        System.out.println("iii "+i);
-                        AListe ee;ee = model.getElement(i);
+                        int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
+                        AListe ee;ee = model.getElement(i);//inutile ?
 
                         Map<String, List<AListe>> params = new HashMap<>();
                         List<AListe> le = new ArrayList<>();le.add(ee);
                         params.put("liste_e", null);
-                        params.put("liste_e_pere", le);
+                        params.put("liste_e_pere", le); //inutile ?
                         try {
                             Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
                             template.process(params, writer);
@@ -317,11 +333,10 @@ public class MainControleur {
                         }
                         return writer;
                     });
-
                     post("/add", (request, response) -> {
                         String titre = request.queryParams("titre");//request.params("")
                         String description = request.queryParams("description");//request.params("")
-                        String id = request.queryParams("idd");//request.params("")
+                        String id = request.queryParams("idd").replace(",","");//request.params("")
                         AListe newListe = new LaListe();
                         if(titre != null || description != null){
                             newListe.setTitre(titre);
@@ -332,55 +347,70 @@ public class MainControleur {
                             newListe.setDateCreation(d);
                             newListe.setId(UUID.randomUUID().hashCode());
                             if(list_e.add(newListe)){
-                                model.insertTableElement(newListe.getId(),newListe.getId(), newListe.getTitre(), "2018-12-15","2018-12-15", newListe.getDescription());//
-                                model.insertTablePossede(newListe.getId(), list_e.getId());
+                                model.insertTableElement(newListe.getId(),Integer.parseInt(id), "2018-12-15","2018-12-15", newListe.getTitre(), newListe.getDescription());//
+                                model.insertTablePossede(newListe.getId(),  Integer.parseInt(id));
+                                System.err.println(newListe.getId()+"  ''''  "+  Integer.parseInt(id));
                             }else{
                                 //redirection erreur nouvelle liste
                             }
-                            response.redirect("/listes/"+id);
+                            response.redirect("/listes/"+Integer.parseInt(id));
                         }else{
                             // faire redirection erreur nouvelle liste
                             response.redirect("/listes/add");
                         }
-                        response.redirect("/listes/"+id);
+                        //response.redirect("/listes/"+id);
                         return "!";
                     });
+                    //SUPPRESSION ELEMENT................................................................................................................................!!!!!!!!!!!
+                    get("/supp", (request, response) -> {
+                        //request.params(":name")
+                        return "Liste supp: " + request.params(":name") + " inexistante.";
+                    });
+                    delete("/:name", (request, response) -> {
+                        //request.params(":name")
+                        return "Liste name: " + request.params(":name") + " inexistante.";
+                    });
+                    //AFFICHAGE ELEMENT................................................................................................................................!!!!!!!!!!!
                     get("/:name", (request, response) -> {
                         //request.params(":name")
+                        /*list_e.setListe(model.getAllElement());
+                        StringWriter writer = new StringWriter();
+                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.params(":name")
+                        AListe ee;ee = model.getElement(i);
+                        Map<String, List<AListe>> params = new HashMap<>();
+                        List<AListe> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
+                        List<AListe> lee = new ArrayList<>();//future Liste element
+                        lee.addAll(LaListe.rechercheFils(model,list_e.getListe(),ee.getId()));
+                        params.put("liste_e", le);
+                        params.put("liste_e_fils", lee);
+                        try {
+                            Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
+                            template.process(params, writer);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return writer;*/
                         return "Liste name: " + request.params(":name") + " inexistante.";
                     });
                 });
 
             });
-            get("/info", (request, response) -> {
-                StringWriter writer = new StringWriter();
-                try {
-                    Template template = configuration.getTemplate("templates/info.ftl");//render("accueil.ftl", model);
-                    template.process(null, writer);
-                    System.out.println(writer);
-                } catch (Exception e) {
-                    // TODO: handle exception
-                    e.printStackTrace();
-                }
-                return writer;
-                //return "info";
-            });
+
             model.getListe(1);
             final String[] vals3 = {""};
             vals3[0] += l;
             String finalVals3 = vals3[0];
             get("/all", (req, res) -> finalVals3);
 
-            //?.????....................................................................utile?
+            //...........................................................................................utile?
             get("/:name", (request, response) -> {
                 return "Page: " + request.params(":name") + " inexistante.";
             });
 
         });
-
         get("/:name", (request, response) -> {
             //request.params(":name")
-            return "dada : " + request.params(":name") + " inexistante.";
+            return "Page: /" + request.params(":name") + " inexistante.";
         });
 
         // a integrer apres le choix de template
