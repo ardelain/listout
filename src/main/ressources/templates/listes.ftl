@@ -47,7 +47,7 @@
         <tbody>
             <#if liste_e??>
                 <#list liste_e as e>
-                    <tr class="element" id="${e.id?replace(",","")}" onclick="SelectLigne(this)>
+                    <tr class="element" id="${e.id?replace(",","")}" onclick="SelectLigne(this)">
                         <td>
                         <td><a href=""><img src="" /></a></td>
                         <td>
@@ -73,7 +73,7 @@
                                 <button class="bouton1" title="Ajouter Element" >+</button>
                             </td>
                         </form>
-                        <form action="/listes/${e.id?replace(",","")}/supp" method="get">
+                        <form action="/listes/${e.id?replace(",","")}/sup" method="get">
                             <td>
                                 <button class="bouton2" title="Supprimer Element">-</button>
                             </td>

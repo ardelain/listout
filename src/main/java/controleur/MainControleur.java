@@ -236,6 +236,13 @@ public class MainControleur {
                 //SUPPRIMER LISTE................................................................................................................................
                 delete("/:name", (request, response) -> {
                     //request.params(":name")
+                    int i = Integer.parseInt(request.params(":name").replace(",",""));
+                    AListe ee = model.getElement(i);
+                    model.deleteElement(ee.getId());
+                    //model.d
+                    //modification
+                    //model.insertTableElement(l.getListElement().size()+1,)
+                    response.redirect("/listes/"+i);
                     return "SUPPRIMER name: " + request.params(":name") + " inexistante.(en cours)";
                 });
                 //................................................................................................................................
@@ -348,13 +355,20 @@ public class MainControleur {
                         return "!";
                     });
                     //SUPPRESSION ELEMENT................................................................................................................................!!!!!!!!!!!
-                    get("/supp", (request, response) -> {
-                        //request.params(":name")
+                    get("/sup", (request, response) -> {
+                        int i = Integer.parseInt(request.params(":name").replace(",",""));
+                        AListe ee = model.getElement(i);
+                        model.deleteElement(ee.getId());
+                        response.redirect("/listes/all");
                         return "Liste supp: " + request.params(":name") + " inexistante.(en cours)";
                     });
                     delete("/:name", (request, response) -> {
                         //request.params(":name")
-                        return "Liste name: " + request.params(":name") + " inexistante.";
+                        int i = Integer.parseInt(request.params(":name").replace(",",""));
+                        AListe ee = model.getElement(i);
+                        model.deleteElement(ee.getId());
+                        response.redirect("/listes/all");
+                        return "Liste supp: " + request.params(":name") + " inexistante.";
                     });
                     //AFFICHAGE ELEMENT................................................................................................................................!!!!!!!!!!!inutile
                     get("/:name", (request, response) -> {

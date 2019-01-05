@@ -76,6 +76,16 @@ public class UnSql2oModel {
         }
     }
 
+
+    public static void deleteElement(int val){
+        try(Connection con = sql2o.open()){
+            con.createQuery("DELETE * FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", val).executeUpdate();
+        }
+        try(Connection con = sql2o.open()){
+           con.createQuery("DELETE * FROM POSSEDE WHERE ELEMENT.idliste = :val or id = :val").addParameter("val", val).executeUpdate();
+        }
+    }
+
     public static List<AListe> getAllElement(){
         try(Connection con = sql2o.open()){
             Table table = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
