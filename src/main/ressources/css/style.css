@@ -161,6 +161,14 @@ listes table tr {
 	border-collapse: collapse;
 }
 
+table_liste_fils .element{
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	text-align: center;
+	border-collapse: collapse;
+}
+
 tr .element{
 	border-style: solid;
 	border-color: black;

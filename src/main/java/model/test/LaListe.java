@@ -8,12 +8,20 @@ import java.util.List;
 public class LaListe extends AListe{
     private List<AListe> children = new ArrayList<>();
 
-    public void add(AListe composant){
-        children.add(composant);
+    public boolean add(AListe composant){
+        if(children.add(composant)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public void remove(AListe composant){
-        children.remove(composant);
+    public boolean remove(AListe composant){
+        if(children.remove(composant)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public List<AListe> getListe() {
@@ -22,6 +30,22 @@ public class LaListe extends AListe{
 
     public void setListe(List<AListe> liste) {
         this.children = liste;
+    }
+
+    public static List<AListe> rechercheFils(UnSql2oModel sql, List<AListe> liste,int id){
+        List<AListe> l = new ArrayList<>();
+        for(int i : sql.getAllPossede(id)){
+            l.add(liste.get(liste.indexOf(i)));
+        }
+        return l;
+    }
+
+    public static List<AListe> recherchePere(UnSql2oModel sql, List<AListe> liste,int id){
+        List<AListe> l = new ArrayList<>();
+        for(int i : sql.getAllPossedant(id)){
+            l.add(liste.get(liste.indexOf(i)));
+        }
+        return l;
     }
 
     @Override

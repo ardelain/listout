@@ -5,6 +5,9 @@ import model.Composant;
 import model.Element;
 import model.ListeComposite;
 import model.Sql2oModel;
+import model.test.AListe;
+import model.test.LaListe;
+import model.test.UnSql2oModel;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import spark.ModelAndView;
@@ -14,26 +17,34 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static spark.Spark.*;
 import static spark.Spark.internalServerError;
 
 public class MainControleur {
     Configuration configuration = new Configuration(Configuration.VERSION_2_3_19);
-    Sql2oModel model;
-    ListeComposite l;
-    List<Element> list_e ;
+    //Sql2oModel model;
 
-    public MainControleur(Sql2oModel model, ListeComposite l,List<Element> list_e) {
+    ListeComposite l;
+    //List<Element> list_e ;
+
+    LaListe list_e;
+    UnSql2oModel model;
+
+    /*public MainControleur(Sql2oModel model, ListeComposite l,List<Element> list_e) {
         this.model = model;
         this.list_e = list_e;//model.getAllElement();
         this.l = l;//model.getListeComposite(1);
-    }
+    }*/
 
+    public MainControleur(UnSql2oModel modelsql, LaListe liste) {
+        this.list_e = liste;
+        this.model = modelsql;
+    }
 
     public void main(String[] args) throws Exception {
         BasicConfigurator.configure();
@@ -102,11 +113,8 @@ public class MainControleur {
             get("/connexion", (request, response) -> {
                 StringWriter writer = new StringWriter();
                 try {
-
                     Map<String, Integer> params = new HashMap<>();
-                    List<Element> le = model.getAllElement();
                     params.put("isIncription", 0);
-
                     Template template = configuration.getTemplate("templates/connexion.ftl");
                     template.process(params, writer);
                 } catch (Exception e) {
@@ -173,7 +181,7 @@ public class MainControleur {
                     try {
                         Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
                         Map<String, List<Element>> params = new HashMap<>();
-                        List<Element> le = model.getAllElement();
+                        List<AListe> le = model.getAllElement();
                         params.put("liste_e", null);
                         params.put("liste_e_pere", null);
                         template.process(null, writer);
@@ -188,26 +196,32 @@ public class MainControleur {
                     String titre = request.queryParams("titre");
                     String description = request.queryParams("description");
                     String id = request.queryParams("idd");
+                    AListe newListe = new LaListe();
                     if(titre != null || description != null){
-                        //ajout
-                        //model.insertTableElement(l.getListElement().size()+1,)
-
-                        /*if(id == null){
-                            //ajout
-                            //model.insertTableElement(l.getListElement().size()+1,)
+                        newListe.setTitre(titre);
+                        newListe.setDescription(description);
+                        Date d = new Date();
+                        d.setTime(System.currentTimeMillis());
+                        newListe.setDateCreation(d);
+                        newListe.setDateCreation(d);
+                        newListe.setId(UUID.randomUUID().hashCode());
+                        if(list_e.add(newListe)){
+                            model.insertTableElement(newListe.getId(),newListe.getId(),  "2018-12-15","2018-12-15",newListe.getTitre(), newListe.getDescription());//
+                            //model.insertTablePossede(newListe.getId(), list_e.getId());
                         }else{
-                            //modification
-                        }*/
+                            //redirection erreur nouvelle liste
+                        }
+                        response.redirect("/listes/"+newListe.getId());
                     }else{
+                        // faire redirection erreur nouvelle liste
                         response.redirect("/listes/add");
                     }
-                    response.redirect("/listes");
-                    return "!";
+                    return "! add !";
                 });
                 get("/all", (request, response) -> {
                     StringWriter writer = new StringWriter();
-                    Map<String, List<Element>> params = new HashMap<>();
-                    List<Element> le = model.getAllElement();
+                    Map<String, List<AListe>> params = new HashMap<>();
+                    List<AListe> le = rechercheMere();//model.getAllElement();
                     params.put("liste_e", le);
                     params.put("liste_seul", null);
                     try {
@@ -224,15 +238,16 @@ public class MainControleur {
                 //..........................................probleme css/ chargement page -> la regardeger (affiche sans le css ...?)
                 path("/:name", () -> {
                     get("", (request, response) -> {
+                        list_e.setListe(model.getAllElement());
                         StringWriter writer = new StringWriter();
                         int i = -3;i = Integer.parseInt(request.params(":name"));//request.params(":name")
-                        Element ee;ee = model.getElement(i);
-                        Map<String, List<Element>> params = new HashMap<>();
-                        List<Element> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
-                        List<Element> lee = new ArrayList<>();//future Liste element
+                        AListe ee;ee = model.getElement(i);
+                        Map<String, List<AListe>> params = new HashMap<>();
+                        List<AListe> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
+                        List<AListe> lee = new ArrayList<>();//future Liste element
+                        lee.addAll(LaListe.rechercheFils(model,list_e.getListe(),ee.getId()));
                         params.put("liste_e", le);
                         params.put("table_liste_fils", lee);
-
                         try {
                             Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                             template.process(params, writer);
@@ -248,10 +263,10 @@ public class MainControleur {
                             StringWriter writer = new StringWriter();
                             int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
                             System.out.println("iii "+i);
-                            Element ee;ee = model.getElement(i);
+                            AListe ee;ee = model.getElement(i);
 
-                            Map<String, List<Element>> params = new HashMap<>();
-                            List<Element> le = new ArrayList<>();le.add(ee);
+                            Map<String, List<AListe>> params = new HashMap<>();
+                            List<AListe> le = new ArrayList<>();le.add(ee);
                             params.put("liste_e", le);
                             params.put("liste_e_pere", null);
                             //params.put("id", ""le.get(0).getId());
@@ -288,10 +303,10 @@ public class MainControleur {
                         StringWriter writer = new StringWriter();
                         int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
                         System.out.println("iii "+i);
-                        Element ee;ee = model.getElement(i);
+                        AListe ee;ee = model.getElement(i);
 
-                        Map<String, List<Element>> params = new HashMap<>();
-                        List<Element> le = new ArrayList<>();le.add(ee);
+                        Map<String, List<AListe>> params = new HashMap<>();
+                        List<AListe> le = new ArrayList<>();le.add(ee);
                         params.put("liste_e", null);
                         params.put("liste_e_pere", le);
                         try {
@@ -307,12 +322,25 @@ public class MainControleur {
                         String titre = request.queryParams("titre");//request.params("")
                         String description = request.queryParams("description");//request.params("")
                         String id = request.queryParams("idd");//request.params("")
+                        AListe newListe = new LaListe();
                         if(titre != null || description != null){
-                            //modification
-                            //model.insertTableElement(l.getListElement().size()+1,)
-
-                        }else{
+                            newListe.setTitre(titre);
+                            newListe.setDescription(description);
+                            Date d = new Date();
+                            d.setTime(System.currentTimeMillis());
+                            newListe.setDateCreation(d);
+                            newListe.setDateCreation(d);
+                            newListe.setId(UUID.randomUUID().hashCode());
+                            if(list_e.add(newListe)){
+                                model.insertTableElement(newListe.getId(),newListe.getId(), newListe.getTitre(), "2018-12-15","2018-12-15", newListe.getDescription());//
+                                model.insertTablePossede(newListe.getId(), list_e.getId());
+                            }else{
+                                //redirection erreur nouvelle liste
+                            }
                             response.redirect("/listes/"+id);
+                        }else{
+                            // faire redirection erreur nouvelle liste
+                            response.redirect("/listes/add");
                         }
                         response.redirect("/listes/"+id);
                         return "!";
@@ -337,7 +365,7 @@ public class MainControleur {
                 return writer;
                 //return "info";
             });
-            model.getListeComposite(1);
+            model.getListe(1);
             final String[] vals3 = {""};
             vals3[0] += l;
             String finalVals3 = vals3[0];
@@ -375,6 +403,18 @@ public class MainControleur {
             res.type("application/json");
             return "{\"message\":\"Custom 500 handling\"}";
         });
+    }
+
+    //recherche d'element sans parent
+    public List<AListe> rechercheMere(){
+        List<AListe> liste = new ArrayList<>();
+        for(AListe a: list_e.getListe()){
+            List<AListe> l =LaListe.recherchePere(model,list_e.getListe(),a.getId());
+            if(l.size() <= 0){
+                liste.add(a);
+            }
+        }
+        return liste;
     }
 
 

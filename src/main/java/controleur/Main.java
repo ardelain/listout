@@ -1,5 +1,6 @@
 package controleur;
 
+import model.Liste;
 import model.test.*;
 import org.h2.jdbcx.JdbcDataSource;
 
@@ -25,13 +26,22 @@ public class Main {
 
         model.dropTable("LISTE");
         model.dropTable("ELEMENT");
+        model.dropTable("POSSEDE");
 
         model.createTableListe();
         model.createTableElement();
+        model.createTablePossede();
 
-        model.insertTableListe(1, "La liste", "Notre première liste", null);
-        model.insertTableListe(2, "La liste2", "Notre deuxième liste", null);
-        model.insertTableListe(3, "La liste3", "Notre troisième liste", null);
+        String ss = "2018-12-29";
+        SimpleDateFormat ssdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date ddd = ssdf.parse(ss);
+
+        Date dd = new Date();
+        System.out.println(ddd.toString());
+
+        model.insertTableListe(1, "La liste", "Notre première liste");//, "2018-12-15", "2018-12-15"
+        model.insertTableListe(2, "La liste2", "Notre deuxième liste");//, "2018-12-15", "2018-12-15"
+        model.insertTableListe(3, "La liste3", "Notre troisième liste");//, "2018-12-15", "2018-12-15"
 
         int id = model.insertTableElement(1, 1, "2018-12-15", "2018-12-16", "toto au berceau", "toto essai1");
         int id2 = model.insertTableElement(2, 1, "2018-12-19", "2018-12-20", "toto au berceaux", "toto essai2");
@@ -41,18 +51,19 @@ public class Main {
         AListe l2 = model.getListe(2);
         AListe l3 = model.getListe(3);
 
-        List<AListe> list_e = model.getAllElement();
+        LaListe list_e = new LaListe();
+        list_e.setListe(model.getAllElement());
 
         UnElement el = model.getElement(1);
         System.out.println("----- " + el + " -----");
 
         //ListeComposite lc = new ListeComposite();
-        l.add(l3);
+        ((LaListe)l).getListe().add(l3);
         //l3.add(l2);
 
         //----- Affichage de tous les éléments
         final String[] vals = {""};
-        list_e.forEach(e -> {
+        list_e.getListe().forEach(e -> {
             System.out.println(e);
             vals[0] += e;
         });
@@ -66,18 +77,18 @@ public class Main {
         vals2[0] += l;
 
         String finalVals2 = vals2[0];
-        //get("/hello", (req, res) -> finalVals2);
+        //get("/hello"< (req, res) -> finalVals2);
 
         String s = "2018-12-29";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date d = sdf.parse(s);
         el.setDateDerModif(d);
         model.updateElement(1, el.getId(),el.getDateCreation(), el.getDateDerModif(), el.getTitre(), el.getDescription());
-        list_e = model.getAllElement();
+        list_e.setListe(model.getAllElement());
         System.out.println("--- "+el+" ---");
         //l.setListe(list_e);
 
-        l.getListe().iterator().forEachRemaining(liste -> {
+        ((LaListe)l).getListe().iterator().forEachRemaining(liste -> {
             if (liste.getClass() == UnElement.class & liste.getId() == el.getId()){
                 liste.setDateDerModif(el.getDateDerModif());
                 System.out.println(liste.getDateDerModif());
@@ -103,13 +114,13 @@ public class Main {
         vals3[0] += l;
 
         String finalVals3 = vals3[0];
-        get("/hello", (req, res) -> finalVals3);
+        //get("/hello", (req, res) -> finalVals3);
 
-        /*try{
-            MainControleur main = new MainControleur(model,l,list_e);
+        try{
+            MainControleur main = new MainControleur(model,list_e);
             main.main(args);
         }catch (Exception e){
             System.err.println("ERREUR INIT SERVEUR"+e);
-        }*/
+        }
     }
 }

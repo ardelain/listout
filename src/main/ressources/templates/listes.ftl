@@ -16,12 +16,16 @@
 <add>
     <#if !table_liste_fils??>
         <div class="boutonaddl">
-            <button  class="bouton" title="Ajouter Liste" onclick="add()">+</button>
+            <x>Listes :</x>
+            <form action="/listes/add" method="get">
+                <button  class="bouton" title="Ajouter Liste element" ">+</button>
+            </form>
         </div>
         <br>
         <br>
     <#else>
         <div class="boutonaddl">
+             <x>Liste :</x>
             <form action="/listes/${liste_e[0].id}/add" method="get">
                 <button  class="bouton" title="Ajouter Liste element" ">+</button>
             </form>

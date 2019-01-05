@@ -11,7 +11,6 @@ public abstract class AListe {
     private String description;
     private Date dateCreation;
     private Date dateDerModif;
-    private List<AListe> children = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -51,22 +50,6 @@ public abstract class AListe {
 
     public void setDateDerModif(Date dateDerModif) {
         this.dateDerModif = dateDerModif;
-    }
-
-    public void add(AListe composant){
-        children.add(composant);
-    }
-
-    public void remove(AListe composant){
-        children.remove(composant);
-    }
-
-    public List<AListe> getListe() {
-        return children;
-    }
-
-    public void setListe(List<AListe> liste) {
-        this.children = liste;
     }
 
     @Override
