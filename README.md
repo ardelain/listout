@@ -7,3 +7,5 @@ site de liste en java / spark / freemarker / h2 / sql2o
 </br>
 
 (mais pas fini)
+
+Licence publique générale GNU (GPL3)
