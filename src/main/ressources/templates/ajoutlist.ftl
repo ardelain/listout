@@ -48,7 +48,11 @@
                 </tr>
                 </table>
         </#if>
-        <input type="submit" value="Ajouter"/>
+        <#if liste_e?? && !liste_e_pere??>
+            <input type="submit" value="Modifier"/>
+        <#else>
+            <input type="submit" value="Ajouter"/>
+        </#if>
     </form>
 
 </div>

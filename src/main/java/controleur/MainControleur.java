@@ -188,6 +188,11 @@ public class MainControleur {
                     return writer;
                     //return "Liste : " + request.params(":name") + " inexistante.";
                 });
+                //RECHERCHE................................................................................................................................!!!!!!!!!!!
+                get("/recherche", (request, response) -> {
+                    //request.params(":name")
+                    return "Liste Recherche: " + request.params(":name") + " inexistante.(en cours)";
+                });
                 //ADD................................................................................................................................
                 get("/add", (request, response) -> {
                     StringWriter writer = new StringWriter();
@@ -233,6 +238,7 @@ public class MainControleur {
                 });
                 //TOUT AFFICHER................................................................................................................................
                 get("/all", (request, response) -> {
+                    list_e.setListe(model.getAllElement());//update de la liste
                     StringWriter writer = new StringWriter();
                     Map<String, List<AListe>> params = new HashMap<>();
                     List<AListe> le = rechercheMere();//model.getAllElement();
@@ -252,15 +258,15 @@ public class MainControleur {
                 //SUPPRIMER LISTE................................................................................................................................
                 delete("/:name", (request, response) -> {
                     //request.params(":name")
-                    return "Liste name: " + request.params(":name") + " inexistante.";
+                    return "SUPPRIMER name: " + request.params(":name") + " inexistante.(en cours)";
                 });
                 //................................................................................................................................
                 path("/:name", () -> {
                     //AFFICHAGE LISTE................................................................................................................................!!!!!!!!!!! ELEMENTS
                     get("", (request, response) -> {
-                        list_e.setListe(model.getAllElement());
+                        list_e.setListe(model.getAllElement());//update de la liste
                         StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name"));//request.params(":name")
+                        int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.params(":name")
                         AListe ee;ee = model.getElement(i);
                         Map<String, List<AListe>> params = new HashMap<>();
                         List<AListe> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
@@ -281,7 +287,7 @@ public class MainControleur {
                         get("", (request, response) -> {
                             //response.type("text/html");
                             StringWriter writer = new StringWriter();
-                            int i = -3;i = Integer.parseInt(request.params(":name"));//request.splat()[0]
+                            int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
                             System.out.println("iii "+i);
                             AListe ee;ee = model.getElement(i);
 
@@ -302,14 +308,16 @@ public class MainControleur {
                             String titre = request.queryParams("titre");//request.params("")
                             String description = request.queryParams("description");//request.params("")
                             String id = request.queryParams("idd");//request.params("")
+                            int i = Integer.parseInt(request.params(":name").replace(",",""));
                             if(titre != null || description != null){
+                                AListe ee;ee = model.getElement(i);//inutile ?
+                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),ee.getDateDerModif(),titre,description);
                                 //modification
                                 //model.insertTableElement(l.getListElement().size()+1,)
-
+                                response.redirect("/listes/"+i);
                             }else{
-                                response.redirect("/listes/"+Integer.parseInt(id));
+                                response.redirect("/listes/"+i);
                             }
-                            response.redirect("/listes/"+Integer.parseInt(id));
                             return "!";
                         });
                     });
@@ -318,7 +326,7 @@ public class MainControleur {
                     get("/add", (request, response) -> {
                         //response.type("text/html");
                         StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
+                        int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));
                         AListe ee;ee = model.getElement(i);//inutile ?
 
                         Map<String, List<AListe>> params = new HashMap<>();
@@ -326,7 +334,7 @@ public class MainControleur {
                         params.put("liste_e", null);
                         params.put("liste_e_pere", le); //inutile ?
                         try {
-                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
+                            Template template = configuration.getTemplate("templates/ajoutlist.ftl");
                             template.process(params, writer);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -364,13 +372,13 @@ public class MainControleur {
                     //SUPPRESSION ELEMENT................................................................................................................................!!!!!!!!!!!
                     get("/supp", (request, response) -> {
                         //request.params(":name")
-                        return "Liste supp: " + request.params(":name") + " inexistante.";
+                        return "Liste supp: " + request.params(":name") + " inexistante.(en cours)";
                     });
                     delete("/:name", (request, response) -> {
                         //request.params(":name")
                         return "Liste name: " + request.params(":name") + " inexistante.";
                     });
-                    //AFFICHAGE ELEMENT................................................................................................................................!!!!!!!!!!!
+                    //AFFICHAGE ELEMENT................................................................................................................................!!!!!!!!!!!inutile
                     get("/:name", (request, response) -> {
                         //request.params(":name")
                         /*list_e.setListe(model.getAllElement());

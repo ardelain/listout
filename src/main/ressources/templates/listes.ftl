@@ -47,11 +47,11 @@
         <tbody>
             <#if liste_e??>
                 <#list liste_e as e>
-                    <tr class="element">
+                    <tr class="element" id="${e.id?replace(",","")}" onclick="SelectLigne(this)>
                         <td>
                         <td><a href=""><img src="" /></a></td>
                         <td>
-                            <div class="comment">
+                            <div class="comment" >
                                 <div class="message">
                                     <div class="author">
                                         <a class="titre" href="${e.id?replace(",","")}">${e.titre}</a>
@@ -66,7 +66,7 @@
                         </td>
                         <td width="30%">
                         <td>
-                            <div class="zone" title="Etat"></div>
+                            <div class="zone" title="Etat"  href="${e.id?replace(",","")}"></div>
                         </td>
                         <form action="/listes/${e.id?replace(",","")}/add" method="get">
                             <td>
@@ -89,7 +89,7 @@
                 </#list>
             </#if>
         </tbody>
-        </table>
+    </table>
         <table class="table_liste_fils">
             <tbody>
             <#if liste_e_fils??>
@@ -143,6 +143,11 @@
 <br>
 <#include "footer.ftl"/>
 <script>
+    function SelectLigne(obj)
+    {
+        var idLigne=obj.id;
+        location.replace("/listes/"+idLigne);
+    }
     function myFunction() {
         //<p id="demo"></p>
         document.getElementById("demo").innerHTML = "Hello World";

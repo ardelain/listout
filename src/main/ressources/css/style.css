@@ -167,6 +167,9 @@ listes table {
 	margin:auto;
 	border-collapse: collapse;
 }
+/* Liens */
+.table_liste a
+{ display:block; }
 
 
 .table_liste tr{
