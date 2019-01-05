@@ -3,9 +3,9 @@
     <br>
     <br>
     <br>
-    <b>Arthur DELAIN Email:</b>
+    <b>Arthur DELAIN Email: Arthur.DELAIN@etu.uca.fr</b>
     <br>
-    <b> Floran CHAZELAS Email:</b>
+    <b> Floran CHAZELAS Email: Floran.CHAZELAS@etu.uca.fr</b>
 </div>
 <br>
 <br>
