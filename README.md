@@ -6,3 +6,4 @@ site de liste en java / spark / freemarker / h2 / sql2o
 <img src="/src/main/ressources/image/todoliste.png" alt="My cool logo"/>
 </br>
 
+(mais pas fini)
