@@ -35,7 +35,7 @@ public class UnSql2oModel {
                     "titre VARCHAR(255), " +
                     "description VARCHAR(255), " +
                     "PRIMARY KEY ( id ), " +
-                    "FOREIGN KEY ( idListe ) REFERENCES ELEMENT ( id ));").executeUpdate();
+                    ");").executeUpdate();//FOREIGN KEY ( idListe ) REFERENCES ELEMENT ( id )
         }
     }
 
@@ -79,11 +79,12 @@ public class UnSql2oModel {
 
     public static void deleteElement(int val){
         try(Connection con = sql2o.open()){
-            con.createQuery("DELETE * FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", val).executeUpdate();
+            con.createQuery("DELETE FROM POSSEDE WHERE POSSEDE.idliste = :val or POSSEDE.id = :val").addParameter("val", val).executeUpdate();
         }
         try(Connection con = sql2o.open()){
-           con.createQuery("DELETE * FROM POSSEDE WHERE ELEMENT.idliste = :val or id = :val").addParameter("val", val).executeUpdate();
+            con.createQuery("DELETE FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", val).executeUpdate();
         }
+
     }
 
     public static List<AListe> getAllElement(){

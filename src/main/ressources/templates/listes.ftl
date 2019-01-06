@@ -120,7 +120,7 @@
                             <button class="bouton1" title="Ajouter Element" >+</button>
                         </td>
                     </form>
-                <form action="/listes/${e.id?replace(",","")}/supp" method="get">
+                <form action="/listes/${e.id?replace(",","")}/sup" method="get">
                         <td>
                             <button class="bouton2" title="Supprimer Element">-</button>
                         </td>
