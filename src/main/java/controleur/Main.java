@@ -1,5 +1,6 @@
 package controleur;
 
+import DAO.UnSql2oModel;
 import model.*;
 import org.h2.jdbcx.JdbcDataSource;
 

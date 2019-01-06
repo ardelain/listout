@@ -1,5 +1,7 @@
 package model;
 
+import DAO.UnSql2oModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class LaListe extends AListe{
         return l;
     }
 
-    public static List<AListe> recherchePere(UnSql2oModel sql, List<AListe> liste,int id){
+    public static List<AListe> recherchePere(UnSql2oModel sql, List<AListe> liste, int id){
         List<AListe> l = new ArrayList<>();
         for(int i : sql.getAllPossedant(id)){
             for (AListe a: liste) {

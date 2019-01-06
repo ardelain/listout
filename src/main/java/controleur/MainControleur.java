@@ -1,9 +1,10 @@
 package controleur;
 
+import autre.log4jConf;
 import freemarker.template.*;
 import model.AListe;
 import model.LaListe;
-import model.UnSql2oModel;
+import DAO.UnSql2oModel;
 import org.apache.log4j.BasicConfigurator;
 
 import java.io.File;

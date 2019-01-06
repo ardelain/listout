@@ -1,5 +1,9 @@
-package model;
+package DAO;
 
+import autre.log4jConf;
+import model.AListe;
+import model.UnElement;
+import org.apache.log4j.Priority;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.data.Row;
@@ -10,8 +14,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class UnSql2oModel {
+public class UnSql2oModel {//MANAGER DAO ?
+    private static final Logger LOGGER = Logger.getLogger(UnSql2oModel.class.getName());
     private static Sql2o sql2o;
 
     public UnSql2oModel(DataSource ds){
@@ -22,6 +29,9 @@ public class UnSql2oModel {
     public static void dropTable(String table){
         try(Connection con = sql2o.open()){
             con.createQuery("DROP TABLE "+ table).executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            //log4jConf.log.log(org.apache.log4j.Priority.,"PB DELETE : {0}",e);
         }
     }
 
@@ -36,9 +46,14 @@ public class UnSql2oModel {
                     "description VARCHAR(255), " +
                     "PRIMARY KEY ( id ), " +
                     ");").executeUpdate();//FOREIGN KEY ( idListe ) REFERENCES ELEMENT ( id )
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
         }
     }
 
+    /**
+     * table permettant de créer une relation de hierarchie entre les elements
+     */
     public static void createTablePossede(){
         try(Connection con = sql2o.open()){
             con.createQuery("CREATE TABLE POSSEDE " +
@@ -47,6 +62,8 @@ public class UnSql2oModel {
                     "PRIMARY KEY ( id ), " +
                     "FOREIGN KEY ( idListe ) REFERENCES ELEMENT ( id ),"+
                     "FOREIGN KEY ( id ) REFERENCES ELEMENT ( id ));").executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
         }
     }
 
@@ -63,6 +80,9 @@ public class UnSql2oModel {
                     .executeUpdate();
 
             return idListe;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return -1;
         }
     }
 
@@ -73,16 +93,41 @@ public class UnSql2oModel {
                     .addParameter("idListe", idListe)
                     .executeUpdate();
             return idListe;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return -1;
         }
     }
 
 
     public static void deleteElement(int val){
+        //recuperation des fils
+        List<AListe> list_e = new LinkedList<>();
+        try(Connection con = sql2o.open()){
+            Table table = con.createQuery("SELECT * FROM POSSEDE WHERE ELEMENT.idliste = :val").addParameter("val", val).executeAndFetchTable();
+            for (Row row : table.rows()) {
+                AListe element = new UnElement();
+                element.setId((int) row.getObject("id"));
+            }
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+        }
+        //suppression des fils
+        for (AListe a : list_e) {
+            try(Connection con = sql2o.open()){
+                con.createQuery("DELETE FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", a.getId()).executeUpdate();
+            }
+        }
+        //suppression des element de la table possede (le lien avec les fils)
         try(Connection con = sql2o.open()){
             con.createQuery("DELETE FROM POSSEDE WHERE POSSEDE.idliste = :val or POSSEDE.id = :val").addParameter("val", val).executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
         }
         try(Connection con = sql2o.open()){
             con.createQuery("DELETE FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", val).executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
         }
 
     }
@@ -101,6 +146,9 @@ public class UnSql2oModel {
                 list_e.add(element);
             }
             return list_e;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return null;
         }
     }
 
@@ -113,6 +161,9 @@ public class UnSql2oModel {
                 li.add((int) row.getObject("id"));
             }
             return li;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return null;
         }
     }
 
@@ -125,6 +176,9 @@ public class UnSql2oModel {
                 li.add((int) row.getObject("idListe"));
             }
             return li;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return null;
         }
     }
     public static UnElement getElement(int val){
@@ -140,6 +194,9 @@ public class UnSql2oModel {
             l.setDateDerModif((Date) table.rows().get(v).getObject("datedermodif"));
             //l.setId((int) table.rows().get(v).getObject("id"));
             return l;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return null;
         }
     }
 
@@ -153,6 +210,8 @@ public class UnSql2oModel {
                     .addParameter("titre", titre)
                     .addParameter("description", description)
                     .executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
         }
     }
 }
