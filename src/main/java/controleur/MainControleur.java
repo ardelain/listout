@@ -17,9 +17,15 @@ import java.util.*;
 import static spark.Spark.*;
 import static spark.Spark.internalServerError;
 
+/**
+ *
+ */
 public class MainControleur {
+    //
     Configuration configuration = new Configuration(Configuration.VERSION_2_3_19);
+    //
     LaListe list_e;
+    //
     UnSql2oModel model;
 
     /*public MainControleur(Sql2oModel model, ListeComposite l,List<Element> list_e) {
@@ -28,11 +34,21 @@ public class MainControleur {
         this.l = l;//model.getListeComposite(1);
     }*/
 
+    /**
+     *
+     * @param modelsql
+     * @param liste
+     */
     public MainControleur(UnSql2oModel modelsql, LaListe liste) {
         this.list_e = liste;
         this.model = modelsql;
     }
 
+    /**
+     *
+     * @param args
+     * @throws Exception
+     */
     public void main(String[] args) throws Exception {
         BasicConfigurator.configure();
         log4jConf.log.info("This is Logger Info");
@@ -474,7 +490,10 @@ public class MainControleur {
         });
     }
 
-    //recherche d'element sans parent
+    /**
+     * recherche d'element sans parent
+     * @return
+     */
     public List<AListe> rechercheMere(){
         List<AListe> liste = new ArrayList<>();
         for(AListe a: list_e.getListe()){
@@ -488,6 +507,12 @@ public class MainControleur {
 
 
     //pas encore utile
+    /**
+     *
+     * @param templateName
+     * @param root
+     * @return
+     */
     public static Template render(String templateName, Map<String, Object> root) {//root = data model -> faire une classe data modele
         try{
             Configuration cfg = new Configuration(Configuration.VERSION_2_3_19);

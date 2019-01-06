@@ -8,7 +8,15 @@ import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * initialisation base de donné
+ */
 public class Main {
+    /**
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         String url = "jdbc:h2:./listout";
         JdbcDataSource datasource = new JdbcDataSource();

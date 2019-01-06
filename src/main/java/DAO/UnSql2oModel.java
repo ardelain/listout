@@ -17,15 +17,28 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class UnSql2oModel {//MANAGER DAO ?
+    //
     private static final Logger LOGGER = Logger.getLogger(UnSql2oModel.class.getName());
+    //
     private static Sql2o sql2o;
 
+    /**
+     *
+     * @param ds
+     */
     public UnSql2oModel(DataSource ds){
         this.sql2o = new Sql2o(ds);
         //this.sql2o = sql2o;
     }
 
+    /**
+     *
+     * @param table
+     */
     public static void dropTable(String table){
         try(Connection con = sql2o.open()){
             con.createQuery("DROP TABLE "+ table).executeUpdate();
@@ -35,6 +48,9 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     *
+     */
     public static void createTableElement(){
         try(Connection con = sql2o.open()){
             con.createQuery("CREATE TABLE ELEMENT " +
@@ -67,6 +83,16 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param idListe
+     * @param dateCreation
+     * @param dateDerModif
+     * @param titre
+     * @param description
+     * @return
+     */
     public static int insertTableElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
         try(Connection con = sql2o.open()){
 
@@ -86,6 +112,12 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param idListe
+     * @return
+     */
     public static int insertTablePossede(int id, int idListe){
         try(Connection con = sql2o.open()){
             con.createQuery("INSERT INTO POSSEDE(id, idListe) VALUES (:id, :idListe)")
@@ -99,7 +131,10 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
-
+    /**
+     *
+     * @param val
+     */
     public static void deleteElement(int val){
         //recuperation des fils
         List<AListe> list_e = new LinkedList<>();
@@ -132,6 +167,10 @@ public class UnSql2oModel {//MANAGER DAO ?
 
     }
 
+    /**
+     *
+     * @return
+     */
     public static List<AListe> getAllElement(){
         try(Connection con = sql2o.open()){
             Table table = con.createQuery("SELECT * FROM ELEMENT").executeAndFetchTable();
@@ -152,6 +191,11 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     *
+     * @param val
+     * @return
+     */
     public static List<Integer> getAllPossede(int val){
         try(Connection con = sql2o.open()){
             List<Integer> li = new ArrayList<>();
@@ -167,6 +211,11 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     *
+     * @param val
+     * @return
+     */
     public static List<Integer> getAllPossedant(int val){
         try(Connection con = sql2o.open()){
             List<Integer> li = new ArrayList<>();
@@ -181,6 +230,12 @@ public class UnSql2oModel {//MANAGER DAO ?
             return null;
         }
     }
+
+    /**
+     *
+     * @param val
+     * @return
+     */
     public static UnElement getElement(int val){
         try(Connection con = sql2o.open()){
             Table table = con.createQuery("SELECT * FROM ELEMENT where id = :val").addParameter("val", val).executeAndFetchTable();
@@ -200,6 +255,15 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param idListe
+     * @param dateCreation
+     * @param dateDerModif
+     * @param titre
+     * @param description
+     */
     public static void updateElement(int id, int idListe, Date dateCreation, Date dateDerModif, String titre, String description){
         try(Connection con = sql2o.open()){
             con.createQuery("UPDATE ELEMENT SET idListe = :idListe, dateCreation = :dateCreation, dateDerModif = :dateDerModif, titre = :titre, description = :description WHERE id = :id")
