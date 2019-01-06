@@ -71,8 +71,10 @@ footer
 	border-width: 2px;
 	width:100%;
 	margin:auto;
+	position: absolute;
 	text-align: center;
 	color: white;
+	bottom: 0;
 }
 
 /*Accueil style*/
@@ -92,6 +94,7 @@ footer
 }
 
 /*Syle principale*/
+
 a {
 	color: white;
 	font-weight: bold;

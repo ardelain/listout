@@ -252,7 +252,9 @@ public class MainControleur {
                     get("", (request, response) -> {
                         list_e.setListe(model.getAllElement());//update de la liste
                         StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.params(":name")
+                        String s = request.params(":name").replace("^[0-9]","") ;
+                        System.err.println("66> "+s);
+                        int i = -3;i = Integer.parseInt(s.replace("^[0-9]",""));//request.params(":name")
                         AListe ee;ee = model.getElement(i);
                         Map<String, List<AListe>> params = new HashMap<>();
                         List<AListe> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
@@ -425,14 +427,50 @@ public class MainControleur {
         //faire page erreur ......................................................................!!
         // gerer l'err 404
         notFound((req, res) -> {
-            res.type("application/json");
-            return "{\"message\":\"Custom 404\"}";
+            StringWriter writerh = new StringWriter();
+            StringWriter writerf = new StringWriter();
+            try {
+                Template template = configuration.getTemplate("templates/header.ftl");//render("accueil.ftl", model);
+                template.process(null, writerh);
+                System.out.println(writerh);
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            try {
+                Template template = configuration.getTemplate("templates/footer.ftl");//render("accueil.ftl", model);
+                template.process(null, writerf);
+                System.out.println(writerf);
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            ///res.type("application/json");
+            return writerh+"<center>{\"Erreur\":\"404\" page introuvable}</center>"+writerf;
         });
 
         // gerer l'err  500
         internalServerError((req, res) -> {
-            res.type("application/json");
-            return "{\"message\":\"Custom 500 handling\"}";
+            StringWriter writerh = new StringWriter();
+            StringWriter writerf = new StringWriter();
+            try {
+                Template template = configuration.getTemplate("templates/header.ftl");//render("accueil.ftl", model);
+                template.process(null, writerh);
+                System.out.println(writerh);
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            try {
+                Template template = configuration.getTemplate("templates/footer.ftl");//render("accueil.ftl", model);
+                template.process(null, writerf);
+                System.out.println(writerf);
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            //res.type("application/json");
+            return writerh+"<center>{\"Erreur\":\"500 Problème(s) serveur\"}</center>"+writerf;
         });
     }
 
