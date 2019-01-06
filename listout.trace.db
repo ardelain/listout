@@ -3107,3 +3107,6 @@ java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supporte
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
 	at java.lang.Thread.run(Thread.java:745)
+2019-01-06 19:19:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "POSSEDE" not found; SQL statement:
+DROP TABLE POSSEDE [42102-196]
