@@ -279,7 +279,7 @@ public class MainControleur {
                     get("", (request, response) -> {
                         list_e.setListe(model.getAllElement());//update de la liste
                         StringWriter writer = new StringWriter();
-                        String s = request.params(":name").replace("^[0-9]","") ;
+                        String s = request.params(":name").replace("^[0-9]","");
                         System.err.println("66> "+s);
                         int i = -3;i = Integer.parseInt(s.replace("^[0-9]",""));//request.params(":name")
                         AListe ee;ee = model.getElement(i);
@@ -302,7 +302,7 @@ public class MainControleur {
                         get("", (request, response) -> {
                             //response.type("text/html");
                             StringWriter writer = new StringWriter();
-                            int i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
+                            int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));//request.splat()[0]
                             AListe ee = model.getElement(i);
 
                             Map<String, Object> params = new HashMap<>();
@@ -336,7 +336,7 @@ public class MainControleur {
                             String id = request.queryParams("idd");//request.params("")
                             String tags = request.queryParams("tags");
                             String[] ls = tags.split(",");
-                            int i = Integer.parseInt(request.params(":name").replace(",",""));
+                            int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
                             if(titre != null || description != null){
                                 //modification
                                 AListe ee = model.getElement(i);
@@ -357,7 +357,7 @@ public class MainControleur {
                     get("/add", (request, response) -> {
                         //response.type("text/html");
                         StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));
+                        int i = -3;i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
                         AListe ee;ee = model.getElement(i);//inutile ?
 
                         Map<String, Object> params = new HashMap<>();
@@ -377,7 +377,7 @@ public class MainControleur {
                     post("/add", (request, response) -> {//...............................................................................................FAIRE AJOUT ELEMENT POAS LALISTE
                         String titre = request.queryParams("titre");//request.params("")
                         String description = request.queryParams("description");//request.params("")
-                        String id = request.queryParams("idd").replace(",","");//request.params("")
+                        String id = request.queryParams("idd").replace("^[0-9]","");//request.params("")
                         String tags = request.queryParams("tags");
                         String[] ls = tags.split(",");
                         AListe newListe = new LaListe();
@@ -408,7 +408,7 @@ public class MainControleur {
                     });
                     //SUPPRESSION ELEMENT................................................................................................................................!!!!!!!!!!!
                     get("/sup", (request, response) -> {
-                        int i = Integer.parseInt(request.params(":name").replace(",",""));
+                        int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
                         AListe ee = model.getElement(i);
                         model.deleteElement(ee.getId());
                         response.redirect("/listes/all");
@@ -416,7 +416,7 @@ public class MainControleur {
                     });
                     delete("/:name", (request, response) -> {
                         //request.params(":name")
-                        int i = Integer.parseInt(request.params(":name").replace(",",""));
+                        int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
                         AListe ee = model.getElement(i);
                         model.deleteElement(ee.getId());
                         response.redirect("/listes/all");

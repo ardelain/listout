@@ -26,7 +26,7 @@
     <#else>
         <div class="boutonaddl">
              <x>Liste :</x>
-            <form action="/listes/${liste_e[0].id?replace(",","")}/add" method="get">
+            <form action="/listes/${liste_e[0].id?replace("/^\\d","")}/add" method="get">
                 <button  class="bouton" title="Ajouter Liste element" ">+</button>
             </form>
         </div>
@@ -47,14 +47,14 @@
         <tbody>
             <#if liste_e??>
                 <#list liste_e as e>
-                    <tr class="element" id="${e.id?replace(",","")}" onclick="SelectLigne(this)">
+                    <tr class="element" id="${e.id?replace("/^\\d","")}" onclick="SelectLigne(this)">
                         <td>
                         <td><a href=""><img src="" /></a></td>
                         <td>
                             <div class="comment" >
                                 <div class="message">
                                     <div class="author">
-                                        <a class="titre" href="${e.id?replace(",","")}">${e.titre}</a>
+                                        <a class="titre" href="${e.id?replace("/^\\d","")}">${e.titre}</a>
                                         <span class="date">${e.dateCreation}</span>
                                     </div>
                                     <p class="content">
@@ -66,19 +66,19 @@
                         </td>
                         <td width="30%">
                         <td>
-                            <div class="zone" title="Etat"  href="${e.id?replace(",","")}"></div>
+                            <div class="zone" title="Etat"  href="${e.id?replace("/^\\d","")}"></div>
                         </td>
-                        <form action="/listes/${e.id?replace(",","")}/add" method="get">
+                        <form action="/listes/${e.id?replace("/^\\d","")}/add" method="get">
                             <td>
                                 <button class="bouton1" title="Ajouter Element" >+</button>
                             </td>
                         </form>
-                        <form action="/listes/${e.id?replace(",","")}/sup" method="get">
+                        <form action="/listes/${e.id?replace("/^\\d","")}/sup" method="get">
                             <td>
                                 <button class="bouton2" title="Supprimer Element">-</button>
                             </td>
                         </form>
-                            <form action="/listes/${e.id?replace(",","")}/modif" method="get">
+                            <form action="/listes/${e.id?replace("/^\\d","")}/modif" method="get">
                             <td>
                                 <button class="bouton3" title="Modifier Element">.</button>
                             </td>
@@ -94,14 +94,14 @@
             <tbody>
             <#if liste_e_fils??>
                 <#list liste_e_fils as e>
-                    <tr class="element" id="${e.id?replace(",","")}" onclick="SelectLigne(this)">
+                    <tr class="element" id="${e.id?replace("^[0-9]","")}" onclick="SelectLigne(this)">
                     <td>
                     <td><a href=""><img src="" /></a></td>
                     <td>
                     <div class="comment">
                     <div class="message">
                     <div class="author">
-                    <a class="titre" href="${e.id?replace(",","")}">${e.titre}</a>
+                    <a class="titre" href="${e.id?replace("^[0-9]","")}">${e.titre}</a>
                     <span class="date">${e.dateCreation}</span>
                     </div>
                     <p class="content">
@@ -115,17 +115,17 @@
                 <td>
                     <div class="zone" title="Etat"></div>
                 </td>
-                <form action="/listes/${e.id?replace(",","")}/add" method="get">
+                <form action="/listes/${e.id?replace("^[0-9]","")}/add" method="get">
                         <td>
                             <button class="bouton1" title="Ajouter Element" >+</button>
                         </td>
                     </form>
-                <form action="/listes/${e.id?replace(",","")}/sup" method="get">
+                <form action="/listes/${e.id?replace("^[0-9]","")}/sup" method="get">
                         <td>
                             <button class="bouton2" title="Supprimer Element">-</button>
                         </td>
                     </form>
-                <form action="/listes/${e.id?replace(",","")}/modif" method="get">
+                <form action="/listes/${e.id?replace("^[0-9]","")}/modif" method="get">
                     <td>
                         <button class="bouton3" title="Modifier Element">.</button>
                     </td>
