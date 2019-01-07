@@ -335,11 +335,16 @@ public class MainControleur {
                             String description = request.queryParams("description");//request.params("")
                             String id = request.queryParams("idd");//request.params("")
                             String tags = request.queryParams("tags");
+                            String[] ls = tags.split(",");
                             int i = Integer.parseInt(request.params(":name").replace(",",""));
                             if(titre != null || description != null){
                                 //modification
-                                AListe ee = model.getElement(i);//inutile ?
+                                AListe ee = model.getElement(i);
                                 model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),ee.getDateDerModif(),titre,description);
+                                model.deleteTagsElement(ee.getId()); //spprime tout les tags
+                                for(String s:ls){
+                                    model.insertTableTag(ee.getId(),s);//ajout des nouveaux tags
+                                }
                                 response.redirect("/listes/"+i);
                             }else{
                                 response.redirect("/listes/"+i);

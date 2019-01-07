@@ -175,10 +175,33 @@ public class UnSql2oModel {//MANAGER DAO ?
         }catch(Exception e){
             LOGGER.log(Level.SEVERE," {0}",e);
         }
-        //suppression des fils
-        for (AListe a : list_e) {
-            try(Connection con = sql2o.open()){
-                con.createQuery("DELETE FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", a.getId()).executeUpdate();
+        //suppression des fils et de leurs fils ....
+        while(list_e.size() >0){
+            for (AListe a : list_e) {
+                try(Connection con = sql2o.open()){
+                    Table table = con.createQuery("SELECT * FROM POSSEDE WHERE ELEMENT.idliste = :val").addParameter("val", a.getId()).executeAndFetchTable();
+                    for (Row row : table.rows()) {
+                        AListe element = new UnElement();
+                        element.setId((int) row.getObject("id"));
+                    }
+                }catch(Exception e){
+                    LOGGER.log(Level.SEVERE," {0}",e);
+                }
+
+                try(Connection con = sql2o.open()){
+                    con.createQuery("DELETE FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", a.getId()).executeUpdate();
+                }
+                //suppression des element de la table possede (le lien avec les fils)
+                try(Connection con = sql2o.open()){
+                    con.createQuery("DELETE FROM POSSEDE WHERE POSSEDE.idliste = :val or POSSEDE.id = :val").addParameter("val", a.getId()).executeUpdate();
+                }catch(Exception e){
+                    LOGGER.log(Level.SEVERE," {0}",e);
+                }
+                try(Connection con = sql2o.open()){
+                    con.createQuery("DELETE FROM TAG WHERE TAG.id = :val ").addParameter("val", a.getId()).executeUpdate();
+                }catch(Exception e){
+                    LOGGER.log(Level.SEVERE," {0}",e);
+                }
             }
         }
         //suppression des element de la table possede (le lien avec les fils)
@@ -188,11 +211,37 @@ public class UnSql2oModel {//MANAGER DAO ?
             LOGGER.log(Level.SEVERE," {0}",e);
         }
         try(Connection con = sql2o.open()){
+            con.createQuery("DELETE FROM TAG WHERE TAG.id = :val ").addParameter("val", val).executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+        }
+        try(Connection con = sql2o.open()){
             con.createQuery("DELETE FROM ELEMENT WHERE ELEMENT.id = :val").addParameter("val", val).executeUpdate();
         }catch(Exception e){
             LOGGER.log(Level.SEVERE," {0}",e);
         }
 
+    }
+
+    /**
+     * supression d'un tag d'un element
+     * @param val
+     * @param s
+     */
+    public static void deleteTag(int val,String s){
+        try(Connection con = sql2o.open()){
+            con.createQuery("DELETE FROM TAG WHERE TAG.id = :val and TAG.tag = :tag").addParameter("val", val).addParameter("tag", s).executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+        }
+    }
+
+    public static void deleteTagsElement(int val){
+        try(Connection con = sql2o.open()){
+            con.createQuery("DELETE FROM TAG WHERE TAG.id = :val").addParameter("val", val).executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+        }
     }
 
     /**

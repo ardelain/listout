@@ -94,7 +94,7 @@
             <tbody>
             <#if liste_e_fils??>
                 <#list liste_e_fils as e>
-                    <tr class="element">
+                    <tr class="element" id="${e.id?replace(",","")}" onclick="SelectLigne(this)">
                     <td>
                     <td><a href=""><img src="" /></a></td>
                     <td>
@@ -147,16 +147,6 @@
     {
         var idLigne=obj.id;
         location.replace("/listes/"+idLigne);
-    }
-    function myFunction() {
-        //<p id="demo"></p>
-        document.getElementById("demo").innerHTML = "Hello World";
-    }
-    function add() {
-        location.replace("/listes/add")
-    }
-    function alll() {
-        location.replace("/listes/all")
     }
 </script>
 </body>
