@@ -1,8 +1,19 @@
 package model;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UnElement extends AListe{
+    public List<Tag> tags = new ArrayList<>();
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     @Override
     public String toString() {
@@ -14,4 +25,7 @@ public class UnElement extends AListe{
                 "</br>";
         return vals;
     }
+
+
+
 }

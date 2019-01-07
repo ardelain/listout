@@ -5,6 +5,7 @@ import freemarker.template.*;
 import model.AListe;
 import model.LaListe;
 import DAO.UnSql2oModel;
+import model.Tag;
 import org.apache.log4j.BasicConfigurator;
 
 import java.io.File;
@@ -208,7 +209,7 @@ public class MainControleur {
                         List<String> ls = new ArrayList<>();
                         params.put("liste_e", null);
                         params.put("liste_e_pere", null);
-                        params.put("liste_tag", ls);
+                        params.put("liste_tag", null);//.........................pas de tag pour les listes ?
                         template.process(params, writer);
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -301,17 +302,26 @@ public class MainControleur {
                         get("", (request, response) -> {
                             //response.type("text/html");
                             StringWriter writer = new StringWriter();
-                            int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
-                            AListe ee;ee = model.getElement(i);
+                            int i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
+                            AListe ee = model.getElement(i);
 
                             Map<String, Object> params = new HashMap<>();
                             List<AListe> le = new ArrayList<>();le.add(ee);
                             List<String> ls = new ArrayList<>();//ls.add("atest");ls.add("btest");ls.add("ctest");ls.add("dtest");ls.add("etest");
-
+                            for(Tag t: model.getAllTag(i)){
+                                ls.add(t.getTag()+",");
+                            }
                             params.put("liste_e", le);
                             params.put("liste_e_pere", null);
-                            params.put("liste_tag", ls);
-                            //params.put("id", ""le.get(0).getId());
+
+                            //pour ne pas afficher le input des tags pour les listes
+                            list_e.setListe(model.getAllElement());//update de la liste
+                            if(LaListe.rechercheFils(model,list_e.getListe(),ee.getId()).size() > 0){
+                                params.put("liste_tag", null);
+                            }else{
+                                params.put("liste_tag", ls);
+                            }
+
                             try {
                                 Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
                                 template.process(params, writer);
@@ -327,10 +337,9 @@ public class MainControleur {
                             String tags = request.queryParams("tags");
                             int i = Integer.parseInt(request.params(":name").replace(",",""));
                             if(titre != null || description != null){
-                                AListe ee;ee = model.getElement(i);//inutile ?
-                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),ee.getDateDerModif(),titre,description);
                                 //modification
-                                //model.insertTableElement(l.getListElement().size()+1,)
+                                AListe ee = model.getElement(i);//inutile ?
+                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),ee.getDateDerModif(),titre,description);
                                 response.redirect("/listes/"+i);
                             }else{
                                 response.redirect("/listes/"+i);
@@ -360,10 +369,12 @@ public class MainControleur {
                         }
                         return writer;
                     });
-                    post("/add", (request, response) -> {
+                    post("/add", (request, response) -> {//...............................................................................................FAIRE AJOUT ELEMENT POAS LALISTE
                         String titre = request.queryParams("titre");//request.params("")
                         String description = request.queryParams("description");//request.params("")
                         String id = request.queryParams("idd").replace(",","");//request.params("")
+                        String tags = request.queryParams("tags");
+                        String[] ls = tags.split(",");
                         AListe newListe = new LaListe();
                         if(titre != null || description != null){
                             newListe.setTitre(titre);
@@ -375,8 +386,10 @@ public class MainControleur {
                             newListe.setId(UUID.randomUUID().hashCode());
                             if(list_e.add(newListe)){
                                 model.insertTableElement(newListe.getId(),Integer.parseInt(id), "2018-12-15","2018-12-15", newListe.getTitre(), newListe.getDescription());//
-                                model.insertTablePossede(newListe.getId(),  Integer.parseInt(id));
-                                //System.err.println(newListe.getId()+"  ''''  "+  Integer.parseInt(id));
+                                model.insertTablePossede(newListe.getId(), Integer.parseInt(id));
+                                for(String s:ls){
+                                    model.insertTableTag(newListe.getId(),s);
+                                }
                             }else{
                                 //redirection erreur nouvelle liste
                             }

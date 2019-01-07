@@ -27,7 +27,7 @@
             <td><input id="titre" name="titre" required=true value="${liste_e[0].titre}"/></input></td><br>
             </tr>
             <td><label for="description">Description :</label></td>
-            <td><textarea id="description" name="description" required=true name="message" rows="10" cols="30">${liste_e[0].description}</textarea></td>
+            <td><textarea id="description" name="description" required=true rows="10" cols="30">${liste_e[0].description}</textarea></td>
             <td><br></td>
             <#if liste_tag??>
                 <tr >
@@ -36,7 +36,7 @@
                     </td>
                     <td>
                     <pre>
-                        <code data-language="html"><input value="<#list liste_tag as e>${e}</#list>" data-role="tagsinput" >
+                        <code data-language="html"><input id="tags" name="tags" value="<#list liste_tag as e>${e}</#list>" data-role="tagsinput" >
                         </code>
                     </pre>
                     </td>
@@ -63,7 +63,7 @@
                     </td>
                     <td>
                             <pre>
-                                <code data-language="html"><input svalue="<#list liste_tag as e>${e}</#list>" data-role="tagsinput" >
+                                <code data-language="html"><input id="tags"  name="tags" value="<#list liste_tag as e>${e}</#list>" data-role="tagsinput" >
                             </pre>
                     </td>
                 </tr>

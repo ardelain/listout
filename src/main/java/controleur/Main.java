@@ -26,9 +26,11 @@ public class Main {
 
         model.dropTable("ELEMENT");
         model.dropTable("POSSEDE");
+        model.dropTable("TAG");
 
         model.createTableElement();
         model.createTablePossede();
+        model.createTableTag();
 
         String ss = "2018-12-29";
         SimpleDateFormat ssdf = new SimpleDateFormat("yyyy-MM-dd");

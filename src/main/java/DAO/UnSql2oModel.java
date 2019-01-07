@@ -2,6 +2,7 @@ package DAO;
 
 import autre.log4jConf;
 import model.AListe;
+import model.Tag;
 import model.UnElement;
 import org.apache.log4j.Priority;
 import org.sql2o.Connection;
@@ -88,10 +89,9 @@ public class UnSql2oModel {//MANAGER DAO ?
      */
     public static void createTableTag(){
         try(Connection con = sql2o.open()){
-            con.createQuery("CREATE TABLE POSSEDE " +
-                    "(idT INTEGER not NULL, " +
-                    "idListe INTEGER not NULL, " +
-                    "PRIMARY KEY ( idT ), " +
+            con.createQuery("CREATE TABLE TAG " +
+                    "(id INTEGER not NULL, " +
+                    "tag VARCHAR(255), " +
                     "FOREIGN KEY ( id ) REFERENCES ELEMENT ( id ));").executeUpdate();
         }catch(Exception e){
             LOGGER.log(Level.SEVERE," {0}",e);
@@ -140,6 +140,19 @@ public class UnSql2oModel {//MANAGER DAO ?
                     .addParameter("idListe", idListe)
                     .executeUpdate();
             return idListe;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return -1;
+        }
+    }
+
+    public static int insertTableTag(int id, String s){
+        try(Connection con = sql2o.open()){
+            con.createQuery("INSERT INTO TAG(id, tag) VALUES (:id, :tag)")
+                    .addParameter("id", id)
+                    .addParameter("tag", s)
+                    .executeUpdate();
+            return 0;
         }catch(Exception e){
             LOGGER.log(Level.SEVERE," {0}",e);
             return -1;
@@ -220,6 +233,22 @@ public class UnSql2oModel {//MANAGER DAO ?
                 li.add((int) row.getObject("id"));
             }
             return li;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return null;
+        }
+    }
+
+    public static List<Tag> getAllTag(int val){
+        try(Connection con = sql2o.open()){
+            List<Tag> lt = new ArrayList<>();
+            Table table = con.createQuery("SELECT * FROM TAG WHERE id = :val").addParameter("val", val).executeAndFetchTable();
+            for (Row row : table.rows()) {
+                Tag t = new Tag();
+                t.setTag((String)row.getObject("tag"));
+                lt.add(t);
+            }
+            return lt;
         }catch(Exception e){
             LOGGER.log(Level.SEVERE," {0}",e);
             return null;
