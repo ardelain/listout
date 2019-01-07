@@ -255,6 +255,26 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    public static List<AListe> recherche(String val){
+        try(Connection con = sql2o.open()){
+            Table table = con.createQuery("SELECT * FROM ELEMENT where titre REGEXP :val or  description REGEXP :val").addParameter("val", val).executeAndFetchTable();
+            List<AListe> list_e = new LinkedList<>();
+            for (Row row : table.rows()) {
+                AListe element = new UnElement();
+                element.setId((int) row.getObject("id"));
+                element.setTitre((String) row.getObject("titre"));
+                element.setDescription((String) row.getObject("description"));
+                element.setDateCreation((Date) row.getObject("datecreation"));
+                element.setDateDerModif((Date) row.getObject("datedermodif"));
+                list_e.add(element);
+            }
+            return list_e;
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+            return null;
+        }
+    }
+
     /**
      *
      * @param id

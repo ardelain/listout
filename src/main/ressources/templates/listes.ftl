@@ -4,7 +4,7 @@
         <div class="recherche">
             <div class="sectionRecherche">
                 <br>
-                <form class="barRecherche">
+                <form action="/listes/recherche" method="get" class="barRecherche">
                     <input type="text" name="search" placeholder="Search..">
                     <input type="submit" value="Go!">
                 </form>

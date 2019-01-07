@@ -100,10 +100,8 @@ public class MainControleur {
                     // TODO Auto-generated method stub
                     //Template template = render("templates/accueil.ftl", null);//configuration.getTemplate("accueil.ftl");//
                     Template template = configuration.getTemplate("templates/accueil.ftl");
-                    //template.process(document, writer);
                     template.process(null, writer);
                     //template.dump(writer);
-                    System.out.println(writer);
                 } catch (Exception e) {
                     // TODO: handle exception
                     e.printStackTrace();
@@ -116,7 +114,6 @@ public class MainControleur {
                 try {
                     Template template = configuration.getTemplate("templates/info.ftl");//render("accueil.ftl", model);
                     template.process(null, writer);
-                    System.out.println(writer);
                 } catch (Exception e) {
                     // TODO: handle exception
                     e.printStackTrace();
@@ -175,7 +172,6 @@ public class MainControleur {
                         Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                         //template.dump(writer);
                         template.process(null, writer);
-                        System.out.println(writer);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
@@ -185,8 +181,22 @@ public class MainControleur {
                 });
                 //RECHERCHE................................................................................................................................!!!!!!!!!!!
                 get("/recherche", (request, response) -> {
-                    //request.params(":name")
-                    return "Liste Recherche: " + request.params(":name") + " inexistante.(en cours)";
+                    StringWriter writer = new StringWriter();
+                    String recherche = request.queryParams("search");
+                    Map<String, List<AListe>> params = new HashMap<>();
+                    System.err.println("xxx"+recherche);
+                    List<AListe> le = model.recherche(recherche);
+                    params.put("liste_e", le);
+                    params.put("liste_e_fils", null);
+                    try {
+                        Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
+                        template.process(params, writer);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
+                    return writer;
+                    //return "Liste Recherche: " + request.params(":name") + " inexistante.(en cours)";
                 });
                 //ADD................................................................................................................................
                 get("/add", (request, response) -> {
@@ -198,7 +208,6 @@ public class MainControleur {
                         params.put("liste_e", null);
                         params.put("liste_e_pere", null);
                         template.process(null, writer);
-                        System.out.println(writer);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
@@ -242,7 +251,6 @@ public class MainControleur {
                     try {
                         Template template = configuration.getTemplate("templates/listes.ftl");//render("accueil.ftl", model);
                         template.process(params, writer);
-                        System.out.println(writer);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
@@ -292,7 +300,6 @@ public class MainControleur {
                             //response.type("text/html");
                             StringWriter writer = new StringWriter();
                             int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
-                            System.out.println("iii "+i);
                             AListe ee;ee = model.getElement(i);
 
                             Map<String, List<AListe>> params = new HashMap<>();
@@ -361,7 +368,7 @@ public class MainControleur {
                             if(list_e.add(newListe)){
                                 model.insertTableElement(newListe.getId(),Integer.parseInt(id), "2018-12-15","2018-12-15", newListe.getTitre(), newListe.getDescription());//
                                 model.insertTablePossede(newListe.getId(),  Integer.parseInt(id));
-                                System.err.println(newListe.getId()+"  ''''  "+  Integer.parseInt(id));
+                                //System.err.println(newListe.getId()+"  ''''  "+  Integer.parseInt(id));
                             }else{
                                 //redirection erreur nouvelle liste
                             }
@@ -448,7 +455,7 @@ public class MainControleur {
             try {
                 Template template = configuration.getTemplate("templates/header.ftl");//render("accueil.ftl", model);
                 template.process(null, writerh);
-                System.out.println(writerh);
+                //System.out.println(writerh);
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
@@ -456,7 +463,7 @@ public class MainControleur {
             try {
                 Template template = configuration.getTemplate("templates/footer.ftl");//render("accueil.ftl", model);
                 template.process(null, writerf);
-                System.out.println(writerf);
+                //System.out.println(writerf);
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
@@ -472,7 +479,7 @@ public class MainControleur {
             try {
                 Template template = configuration.getTemplate("templates/header.ftl");//render("accueil.ftl", model);
                 template.process(null, writerh);
-                System.out.println(writerh);
+                //System.out.println(writerh);
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
@@ -480,7 +487,7 @@ public class MainControleur {
             try {
                 Template template = configuration.getTemplate("templates/footer.ftl");//render("accueil.ftl", model);
                 template.process(null, writerf);
-                System.out.println(writerf);
+                //System.out.println(writerf);
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
