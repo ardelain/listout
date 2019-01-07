@@ -1,5 +1,5 @@
 <#include "header.ftl"/>
-
+<link  href="/../test/tagsinput.css" rel="stylesheet">
 <div class="liste">
     <br>
     <br>
@@ -23,42 +23,72 @@
 
             <table class="table_addliste" >
             <tr >
-            <td> <label for="titre">Titre</label></td>
+            <td> <label for="titre">Titre :</label></td>
             <td><input id="titre" name="titre" required=true value="${liste_e[0].titre}"/></input></td><br>
-        <tr>
-        </tr>
-        <td><label for="description">Description</label></td>
+            </tr>
+            <td><label for="description">Description :</label></td>
             <td><textarea id="description" name="description" required=true name="message" rows="10" cols="30">${liste_e[0].description}</textarea></td>
             <td><br></td>
-            </tr>
+            <#if liste_tag??>
+                <tr >
+                    <td>
+                        Tags :
+                    </td>
+                    <td>
+                    <pre>
+                        <code data-language="html"><input value="<#list liste_tag as e>${e}</#list>" data-role="tagsinput" >
+                        </code>
+                    </pre>
+                    </td>
+                </tr>
+            </#if>
             </table>
         <#else >
             <#if liste_e_pere??>
                 <input style="display:none;" id="idd" name="idd" value="${liste_e_pere[0].id}"/></input>
             </#if>
-                <table class="table_addliste" >
+            <table class="table_addliste" >
+                    <tr >
+                        <td> <label for="titre">Titre :</label></td>
+                        <td><input id="titre" name="titre" required=true /></input></td><br>
+                    </tr>
+                    <td><label for="description">Description :</label></td>
+                    <td><textarea id="description" name="description" required=true name="message" rows="10" cols="30"></textarea></td>
+                    <td><br></td>
                 <tr >
-                <td> <label for="titre">Titre</label></td>
-                <td><input id="titre" name="titre" required=true /></input></td><br>
-                <tr>
+                <#if liste_tag??>
+                <tr >
+                    <td>
+                        Tags :
+                    </td>
+                    <td>
+                            <pre>
+                                <code data-language="html"><input svalue="<#list liste_tag as e>${e}</#list>" data-role="tagsinput" >
+                            </pre>
+                    </td>
                 </tr>
-                <td><label for="description">Description</label></td>
-                <td><textarea id="description" required=true  name="description" name="message" rows="10" cols="30"></textarea></td>
-                <td><br></td>
-                </tr>
-                </table>
+                </#if>
+            </table>
         </#if>
+            <br>
+            <br>
+            <br>
+            <br>
         <#if liste_e?? && !liste_e_pere??>
             <input type="submit" value="Modifier"/>
         <#else>
             <input type="submit" value="Ajouter"/>
         </#if>
     </form>
-
 </div>
 <br>
 <br>
 <br>
-<#include "footer.ftl"/>
+<footer class="footer">
+        <p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/../test/tagsinput.min.js"></script>
 </body>
 </html>
+

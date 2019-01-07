@@ -85,6 +85,21 @@ public class UnSql2oModel {//MANAGER DAO ?
 
     /**
      *
+     */
+    public static void createTableTag(){
+        try(Connection con = sql2o.open()){
+            con.createQuery("CREATE TABLE POSSEDE " +
+                    "(idT INTEGER not NULL, " +
+                    "idListe INTEGER not NULL, " +
+                    "PRIMARY KEY ( idT ), " +
+                    "FOREIGN KEY ( id ) REFERENCES ELEMENT ( id ));").executeUpdate();
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE," {0}",e);
+        }
+    }
+
+    /**
+     *
      * @param id
      * @param idListe
      * @param dateCreation
@@ -255,6 +270,11 @@ public class UnSql2oModel {//MANAGER DAO ?
         }
     }
 
+    /**
+     * Permet de faire des recherches générales à partir des titres et des descriptions des elements
+     * @param val
+     * @return
+     */
     public static List<AListe> recherche(String val){
         try(Connection con = sql2o.open()){
             Table table = con.createQuery("SELECT * FROM ELEMENT where titre REGEXP :val or  description REGEXP :val").addParameter("val", val).executeAndFetchTable();

@@ -203,11 +203,13 @@ public class MainControleur {
                     StringWriter writer = new StringWriter();
                     try {
                         Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
-                        Map<String, List<AListe>> params = new HashMap<>();
+                        Map<String, Object> params = new HashMap<>();
                         List<AListe> le = model.getAllElement();
+                        List<String> ls = new ArrayList<>();
                         params.put("liste_e", null);
                         params.put("liste_e_pere", null);
-                        template.process(null, writer);
+                        params.put("liste_tag", ls);
+                        template.process(params, writer);
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
@@ -302,10 +304,13 @@ public class MainControleur {
                             int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));//request.splat()[0]
                             AListe ee;ee = model.getElement(i);
 
-                            Map<String, List<AListe>> params = new HashMap<>();
+                            Map<String, Object> params = new HashMap<>();
                             List<AListe> le = new ArrayList<>();le.add(ee);
+                            List<String> ls = new ArrayList<>();//ls.add("atest");ls.add("btest");ls.add("ctest");ls.add("dtest");ls.add("etest");
+
                             params.put("liste_e", le);
                             params.put("liste_e_pere", null);
+                            params.put("liste_tag", ls);
                             //params.put("id", ""le.get(0).getId());
                             try {
                                 Template template = configuration.getTemplate("templates/ajoutlist.ftl");//render("accueil.ftl", model);
@@ -319,6 +324,7 @@ public class MainControleur {
                             String titre = request.queryParams("titre");//request.params("")
                             String description = request.queryParams("description");//request.params("")
                             String id = request.queryParams("idd");//request.params("")
+                            String tags = request.queryParams("tags");
                             int i = Integer.parseInt(request.params(":name").replace(",",""));
                             if(titre != null || description != null){
                                 AListe ee;ee = model.getElement(i);//inutile ?
@@ -340,10 +346,12 @@ public class MainControleur {
                         int i = -3;i = Integer.parseInt(request.params(":name").replace(",",""));
                         AListe ee;ee = model.getElement(i);//inutile ?
 
-                        Map<String, List<AListe>> params = new HashMap<>();
+                        Map<String, Object> params = new HashMap<>();
                         List<AListe> le = new ArrayList<>();le.add(ee);
+                        List<String> ls = new ArrayList<>();
                         params.put("liste_e", null);
                         params.put("liste_e_pere", le); //inutile ?
+                        params.put("liste_tag", ls);
                         try {
                             Template template = configuration.getTemplate("templates/ajoutlist.ftl");
                             template.process(params, writer);
