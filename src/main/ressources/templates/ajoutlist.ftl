@@ -67,6 +67,15 @@
                             </pre>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Etat :
+                    </td>
+                    <td>
+                        <input type="radio" name="afaire" value="1"/> A Faire<br />
+                        <input type="radio" name="fait" value="2"/> Fait<br />
+                    </td>
+                </tr>
                 </#if>
             </table>
         </#if>

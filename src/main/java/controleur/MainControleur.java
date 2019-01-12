@@ -235,7 +235,7 @@ public class MainControleur {
                         long date = new Date().getTime();
                         sdf.format(date);
                         if(list_e.add(newListe)){
-                            model.insertTableElement(newListe.getId(),newListe.getId(), sdf.format(date), sdf.format(date),newListe.getTitre(), newListe.getDescription());//
+                            model.insertTableElement(newListe.getId(),newListe.getId(), sdf.format(date), sdf.format(date),newListe.getTitre(), newListe.getDescription(),0);//etat 0 par default, les listes n'ont pas d'état
                             //model.insertTablePossede(newListe.getId(), list_e.getId());
                         }else{
                             //redirection erreur nouvelle liste
@@ -284,7 +284,7 @@ public class MainControleur {
                         list_e.setListe(model.getAllElement());//update de la liste
                         StringWriter writer = new StringWriter();
                         String s = replacePasInt(request.params(":name"));
-                        System.err.println("66> "+s);
+                        //System.err.println("66> "+s);
                         int i = -3;i = Integer.parseInt(replacePasInt(s));//request.params(":name")
                         AListe ee;ee = model.getElement(i);
                         Map<String, List<AListe>> params = new HashMap<>();
@@ -339,14 +339,25 @@ public class MainControleur {
                             String description = request.queryParams("description");//request.params("")
                             String id = request.queryParams("idd");//request.params("")
                             String tags = request.queryParams("tags");
+
                             String[] ls = tags.split(",");
                             int i = Integer.parseInt(replacePasInt(request.params(":name")));
                             Date d = new Date();
                             d.setTime(System.currentTimeMillis());//inutile
+                            int etat = 0;
+                            String afaire = request.queryParams("afaire");
+                            String fait = request.queryParams("fait");
+                            if(afaire == null){
+                                if(fait != null){
+                                    etat = 2;
+                                }
+                            }else{
+                                etat = 1;
+                            }
                             if(titre != null || description != null){
                                 //modification
                                 AListe ee = model.getElement(i);
-                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),d,titre,description);
+                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),d,titre,description,etat);
                                 model.deleteTagsElement(ee.getId()); //spprime tout les tags
                                 for(String s:ls){
                                     model.insertTableTag(ee.getId(),s);//ajout des nouveaux tags
@@ -387,6 +398,16 @@ public class MainControleur {
                         String tags = request.queryParams("tags");
                         String[] ls = tags.split(",");
                         AListe newListe = new LaListe();
+                        int etat = 0;
+                        String afaire = request.queryParams("afaire");
+                        String fait = request.queryParams("fait");
+                        if(afaire == null){
+                            if(fait != null){
+                                etat = 2;
+                            }
+                        }else{
+                            etat = 1;
+                        }
                         if(titre != null || description != null){
                             newListe.setTitre(titre);
                             newListe.setDescription(description);
@@ -395,7 +416,7 @@ public class MainControleur {
                             long date = new Date().getTime();
                             sdf.format(date);
                             if(list_e.add(newListe)){
-                                model.insertTableElement(newListe.getId(),Integer.parseInt(id), sdf.format(date),sdf.format(date), newListe.getTitre(), newListe.getDescription());//
+                                model.insertTableElement(newListe.getId(),Integer.parseInt(id), sdf.format(date),sdf.format(date), newListe.getTitre(), newListe.getDescription(),etat);//
                                 model.insertTablePossede(newListe.getId(), Integer.parseInt(id));
                                 for(String s:ls){
                                     model.insertTableTag(newListe.getId(),s);
@@ -470,15 +491,7 @@ public class MainControleur {
             return "Page: /" + request.params(":name") + " inexistante.";
         });
 
-        // a integrer apres le choix de template
-        /*get("/:name", (req, res) -> {
-            Map<String, Object> model = new HashMap<>();
-            return new VelocityTemplateEngine().render(
-                    new ModelAndView(model, "path-to-template")
-            );
-        });*/
-
-        //faire page erreur ......................................................................!!
+        //ERREUR ......................................................................!!
         // gerer l'err 404
         notFound((req, res) -> {
             StringWriter writerh = new StringWriter();

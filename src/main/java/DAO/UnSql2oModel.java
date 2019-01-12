@@ -60,7 +60,8 @@ public class UnSql2oModel {//MANAGER DAO ?
                     "dateCreation DATE, " +
                     "dateDerModif DATE, " +
                     "titre VARCHAR(255), " +
-                    "description VARCHAR(255), " +
+                    "description VARCHAR(10000), " +
+                    "etat INTEGER not NULL, " +
                     "PRIMARY KEY ( id ), " +
                     ");").executeUpdate();//FOREIGN KEY ( idListe ) REFERENCES ELEMENT ( id )
         }catch(Exception e){
@@ -108,16 +109,17 @@ public class UnSql2oModel {//MANAGER DAO ?
      * @param description
      * @return
      */
-    public static int insertTableElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description){
+    public static int insertTableElement(int id, int idListe, String dateCreation, String dateDerModif, String titre, String description,int etat){
         try(Connection con = sql2o.open()){
 
-            con.createQuery("INSERT INTO ELEMENT(id, idListe, dateCreation, dateDerModif, titre, description) VALUES (:id, :idListe, :dateCreation, :dateDerModif, :titre, :description)")
+            con.createQuery("INSERT INTO ELEMENT(id, idListe, dateCreation, dateDerModif, titre, description,etat) VALUES (:id, :idListe, :dateCreation, :dateDerModif, :titre, :description,:etat)")
                     .addParameter("id", id)
                     .addParameter("idListe", idListe)
                     .addParameter("dateCreation", dateCreation)
                     .addParameter("dateDerModif", dateDerModif)
                     .addParameter("titre", titre)
                     .addParameter("description", description)
+                    .addParameter("etat", etat)
                     .executeUpdate();
 
             return idListe;
@@ -259,6 +261,9 @@ public class UnSql2oModel {//MANAGER DAO ?
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
                 element.setDateDerModif((Date) row.getObject("datedermodif"));
+                if(element.getClass() == UnElement.class){
+                    ((UnElement) element).setEtat((int) row.getObject("etat"));
+                }
                 list_e.add(element);
             }
             return list_e;
@@ -340,6 +345,7 @@ public class UnSql2oModel {//MANAGER DAO ?
             l.setDescription((String) table.rows().get(v).getObject("description"));
             l.setDateCreation((Date) table.rows().get(v).getObject("datecreation"));
             l.setDateDerModif((Date) table.rows().get(v).getObject("datedermodif"));
+            l.setEtat((int) table.rows().get(v).getObject("etat"));
             //l.setId((int) table.rows().get(v).getObject("id"));
             return l;
         }catch(Exception e){
@@ -364,6 +370,9 @@ public class UnSql2oModel {//MANAGER DAO ?
                 element.setDescription((String) row.getObject("description"));
                 element.setDateCreation((Date) row.getObject("datecreation"));
                 element.setDateDerModif((Date) row.getObject("datedermodif"));
+                if(element.getClass() == UnElement.class){
+                    ((UnElement) element).setEtat((int) row.getObject("etat"));
+                }
                 list_e.add(element);
             }
             return list_e;
@@ -382,15 +391,16 @@ public class UnSql2oModel {//MANAGER DAO ?
      * @param titre
      * @param description
      */
-    public static void updateElement(int id, int idListe, Date dateCreation, Date dateDerModif, String titre, String description){
+    public static void updateElement(int id, int idListe, Date dateCreation, Date dateDerModif, String titre, String description,int etat){
         try(Connection con = sql2o.open()){
-            con.createQuery("UPDATE ELEMENT SET idListe = :idListe, dateCreation = :dateCreation, dateDerModif = :dateDerModif, titre = :titre, description = :description WHERE id = :id")
+            con.createQuery("UPDATE ELEMENT SET idListe = :idListe, dateCreation = :dateCreation, dateDerModif = :dateDerModif, titre = :titre, description = :description, etat = :etat WHERE id = :id")
                     .addParameter("id", id)
                     .addParameter("idListe", idListe)
                     .addParameter("dateCreation", dateCreation)
                     .addParameter("dateDerModif", dateDerModif)
                     .addParameter("titre", titre)
                     .addParameter("description", description)
+                    .addParameter("etat", etat)
                     .executeUpdate();
         }catch(Exception e){
             LOGGER.log(Level.SEVERE," {0}",e);

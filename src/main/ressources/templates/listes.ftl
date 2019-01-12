@@ -105,6 +105,15 @@
                         <a class="titre" href="${e.id?c}">${e.titre}</a>
                         <a class="date">Date Création: <span >${e.dateCreation}</span></a>
                         <a class="date">Date Modification: <span >${e.dateDerModif}</span></a>
+                        <#if e.etat == 0>
+                            <#else>
+                            <#if e.etat == 1>
+                                <a class="date">Etat : <span >Fait</span></a>
+                            <#else>
+                                <a class="date">Etat : <span >A faire</span></a>
+                            </#if>
+                        </#if>
+
                     </div>
                     <p class="content">
                     ${e.description}
