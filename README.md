@@ -10,9 +10,7 @@ site de liste en java (11) / spark / freemarker / h2 / sql2o sur intelliJ IDEA
 
 Licence publique générale GNU (GPL3)
 
-<pre>listout
-
-"Tout pour faire des Listes." site de liste en java (11) / spark / freemarker / h2 / sql2o sur intelliJ IDEA
+<pre>
 
 Action : -recherche en rapport au titre ou a la description de n'importe quel élément
 	 -création de liste avec un titre et une decription
