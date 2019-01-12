@@ -19,7 +19,7 @@ Action : -recherche en rapport au titre ou a la description de n'importe quel é
 	 -ajout d'element avec un titre et une decription (qui peuvent a leur tour devenir des listes)
 
 src/main/</br>
- 	<BQ>java/</br>
+ 	&nbsp;java/</br>
 		autre/</br>
 			log4jConf.java : log configuration du serveur spark</br>
    controleur/</br>
