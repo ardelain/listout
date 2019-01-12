@@ -85,4 +85,4 @@ Base de donnée
 
 
 
-Injection dans les formulaire non géré; Element dans une autre Liste non géré;</pre>
+Injection dans les formulaire non géré; Element dans une autre Liste non géré; connexion non géré; ceratin visuel a revoir</pre>
