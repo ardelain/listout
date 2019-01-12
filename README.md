@@ -16,7 +16,7 @@ Action : -recherche en rapport au titre ou a la description de n'importe quel é
 	 -afficher toutes les listes
 	 -afficher la liste ou l'élément selectionné (clique sur la ligne du tableau)
 	 -création de liste avec un titre et une decription
-	 -ajout d'element avec un titre et une decription (qui peuvent a leur tour devenir des listes)
+	 -ajout d'element avec un titre et une decription un etat et une liste de tag (qui peuvent a leur tour devenir des listes)
 	 -modification liste et élement (titre et description)
 	 -voir l'accueil
 	 -voir la page d'information/contact
