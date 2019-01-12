@@ -26,7 +26,7 @@
     <#else>
         <div class="boutonaddl">
              <x>Liste :</x>
-            <form action="/listes/${liste_e[0].id?replace("/^\\d","")}/add" method="get">
+            <form action="/listes/${liste_e[0].id?c}/add" method="get">
                 <button  class="bouton" title="Ajouter Liste element" ">+</button>
             </form>
         </div>
@@ -47,15 +47,16 @@
         <tbody>
             <#if liste_e??>
                 <#list liste_e as e>
-                    <tr class="element" id="${e.id?replace("/^\\d","")}" onclick="SelectLigne(this)">
+                    <tr class="element" id="${e.id?c}" onclick="SelectLigne(this)">
                         <td>
                         <td><a href=""><img src="" /></a></td>
                         <td>
-                            <div class="comment" >
+                            <div >
                                 <div class="message">
-                                    <div class="author">
-                                        <a class="titre" href="${e.id?replace("/^\\d","")}">${e.titre}</a>
-                                        <span class="date">${e.dateCreation}</span>
+                                    <div class="author" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                                        <a class="titre" href="${e.id?c}">${e.titre}</a>
+                                        <a class="date">Date Création: <span >${e.dateCreation}</span></a>
+                                        <a class="date">Date Modification: <span >${e.dateDerModif}</span></a>
                                     </div>
                                     <p class="content">
                                              ${e.description}
@@ -66,19 +67,19 @@
                         </td>
                         <td width="30%">
                         <td>
-                            <div class="zone" title="Etat"  href="${e.id?replace("/^\\d","")}"></div>
+                            <div class="zone" title="Etat"  href="${e.id?c}"></div>
                         </td>
-                        <form action="/listes/${e.id?replace("/^\\d","")}/add" method="get">
+                        <form action="/listes/${e.id?c}/add" method="get">
                             <td>
                                 <button class="bouton1" title="Ajouter Element" >+</button>
                             </td>
                         </form>
-                        <form action="/listes/${e.id?replace("/^\\d","")}/sup" method="get">
+                        <form action="/listes/${e.id?c}/sup" method="get">
                             <td>
                                 <button class="bouton2" title="Supprimer Element">-</button>
                             </td>
                         </form>
-                            <form action="/listes/${e.id?replace("/^\\d","")}/modif" method="get">
+                            <form action="/listes/${e.id?c}/modif" method="get">
                             <td>
                                 <button class="bouton3" title="Modifier Element">.</button>
                             </td>
@@ -94,15 +95,16 @@
             <tbody>
             <#if liste_e_fils??>
                 <#list liste_e_fils as e>
-                    <tr class="element" id="${e.id?replace("^[0-9]","")}" onclick="SelectLigne(this)">
+                    <tr class="element" id="${e.id?c}" onclick="SelectLigne(this)">
                     <td>
                     <td><a href=""><img src="" /></a></td>
                     <td>
                     <div class="comment">
                     <div class="message">
-                    <div class="author">
-                    <a class="titre" href="${e.id?replace("^[0-9]","")}">${e.titre}</a>
-                    <span class="date">${e.dateCreation}</span>
+                    <div class="author" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <a class="titre" href="${e.id?c}">${e.titre}</a>
+                        <a class="date">Date Création: <span >${e.dateCreation}</span></a>
+                        <a class="date">Date Modification: <span >${e.dateDerModif}</span></a>
                     </div>
                     <p class="content">
                     ${e.description}
@@ -115,17 +117,17 @@
                 <td>
                     <div class="zone" title="Etat"></div>
                 </td>
-                <form action="/listes/${e.id?replace("^[0-9]","")}/add" method="get">
+                <form action="/listes/${e.id?c}/add" method="get">
                         <td>
                             <button class="bouton1" title="Ajouter Element" >+</button>
                         </td>
                     </form>
-                <form action="/listes/${e.id?replace("^[0-9]","")}/sup" method="get">
+                <form action="/listes/${e.id?c}/sup" method="get">
                         <td>
                             <button class="bouton2" title="Supprimer Element">-</button>
                         </td>
                     </form>
-                <form action="/listes/${e.id?replace("^[0-9]","")}/modif" method="get">
+                <form action="/listes/${e.id?c}/modif" method="get">
                     <td>
                         <button class="bouton3" title="Modifier Element">.</button>
                     </td>
@@ -145,7 +147,8 @@
 <script>
     function SelectLigne(obj)
     {
-        var idLigne=obj.id;
+        var t = \\d;
+        var idLigne=obj.id.toLocaleString().replace(t,"s");
         location.replace("/listes/"+idLigne);
     }
 </script>

@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static spark.Spark.*;
@@ -226,12 +227,15 @@ public class MainControleur {
                         newListe.setTitre(titre);
                         newListe.setDescription(description);
                         Date d = new Date();
-                        d.setTime(System.currentTimeMillis());
-                        newListe.setDateCreation(d);
-                        newListe.setDateCreation(d);
+                        d.setTime(System.currentTimeMillis());//inutile
+                        newListe.setDateCreation(d);//inutile
+                        newListe.setDateCreation(d);//inutile
                         newListe.setId(UUID.randomUUID().hashCode());
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        long date = new Date().getTime();
+                        sdf.format(date);
                         if(list_e.add(newListe)){
-                            model.insertTableElement(newListe.getId(),newListe.getId(),  "2018-12-15","2018-12-15",newListe.getTitre(), newListe.getDescription());//
+                            model.insertTableElement(newListe.getId(),newListe.getId(), sdf.format(date), sdf.format(date),newListe.getTitre(), newListe.getDescription());//
                             //model.insertTablePossede(newListe.getId(), list_e.getId());
                         }else{
                             //redirection erreur nouvelle liste
@@ -264,7 +268,7 @@ public class MainControleur {
                 //SUPPRIMER LISTE................................................................................................................................
                 delete("/:name", (request, response) -> {
                     //request.params(":name")
-                    int i = Integer.parseInt(request.params(":name").replace(",",""));
+                    int i = Integer.parseInt(replacePasInt(request.params(":name")));
                     AListe ee = model.getElement(i);
                     model.deleteElement(ee.getId());
                     //model.d
@@ -279,9 +283,9 @@ public class MainControleur {
                     get("", (request, response) -> {
                         list_e.setListe(model.getAllElement());//update de la liste
                         StringWriter writer = new StringWriter();
-                        String s = request.params(":name").replace("^[0-9]","");
+                        String s = replacePasInt(request.params(":name"));
                         System.err.println("66> "+s);
-                        int i = -3;i = Integer.parseInt(s.replace("^[0-9]",""));//request.params(":name")
+                        int i = -3;i = Integer.parseInt(replacePasInt(s));//request.params(":name")
                         AListe ee;ee = model.getElement(i);
                         Map<String, List<AListe>> params = new HashMap<>();
                         List<AListe> le = new ArrayList<>();le.add(ee);// future Liste<AListe>
@@ -302,7 +306,7 @@ public class MainControleur {
                         get("", (request, response) -> {
                             //response.type("text/html");
                             StringWriter writer = new StringWriter();
-                            int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));//request.splat()[0]
+                            int i = Integer.parseInt(replacePasInt(request.params(":name")));
                             AListe ee = model.getElement(i);
 
                             Map<String, Object> params = new HashMap<>();
@@ -336,11 +340,13 @@ public class MainControleur {
                             String id = request.queryParams("idd");//request.params("")
                             String tags = request.queryParams("tags");
                             String[] ls = tags.split(",");
-                            int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
+                            int i = Integer.parseInt(replacePasInt(request.params(":name")));
+                            Date d = new Date();
+                            d.setTime(System.currentTimeMillis());//inutile
                             if(titre != null || description != null){
                                 //modification
                                 AListe ee = model.getElement(i);
-                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),ee.getDateDerModif(),titre,description);
+                                model.updateElement(ee.getId(),ee.getId(), ee.getDateCreation(),d,titre,description);
                                 model.deleteTagsElement(ee.getId()); //spprime tout les tags
                                 for(String s:ls){
                                     model.insertTableTag(ee.getId(),s);//ajout des nouveaux tags
@@ -357,7 +363,7 @@ public class MainControleur {
                     get("/add", (request, response) -> {
                         //response.type("text/html");
                         StringWriter writer = new StringWriter();
-                        int i = -3;i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
+                        int i = -3;i = Integer.parseInt(replacePasInt(request.params(":name")));
                         AListe ee;ee = model.getElement(i);//inutile ?
 
                         Map<String, Object> params = new HashMap<>();
@@ -377,20 +383,19 @@ public class MainControleur {
                     post("/add", (request, response) -> {//...............................................................................................FAIRE AJOUT ELEMENT POAS LALISTE
                         String titre = request.queryParams("titre");//request.params("")
                         String description = request.queryParams("description");//request.params("")
-                        String id = request.queryParams("idd").replace("^[0-9]","");//request.params("")
+                        String id = replacePasInt(request.queryParams("idd"));
                         String tags = request.queryParams("tags");
                         String[] ls = tags.split(",");
                         AListe newListe = new LaListe();
                         if(titre != null || description != null){
                             newListe.setTitre(titre);
                             newListe.setDescription(description);
-                            Date d = new Date();
-                            d.setTime(System.currentTimeMillis());
-                            newListe.setDateCreation(d);
-                            newListe.setDateCreation(d);
                             newListe.setId(UUID.randomUUID().hashCode());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            long date = new Date().getTime();
+                            sdf.format(date);
                             if(list_e.add(newListe)){
-                                model.insertTableElement(newListe.getId(),Integer.parseInt(id), "2018-12-15","2018-12-15", newListe.getTitre(), newListe.getDescription());//
+                                model.insertTableElement(newListe.getId(),Integer.parseInt(id), sdf.format(date),sdf.format(date), newListe.getTitre(), newListe.getDescription());//
                                 model.insertTablePossede(newListe.getId(), Integer.parseInt(id));
                                 for(String s:ls){
                                     model.insertTableTag(newListe.getId(),s);
@@ -408,7 +413,7 @@ public class MainControleur {
                     });
                     //SUPPRESSION ELEMENT................................................................................................................................!!!!!!!!!!!
                     get("/sup", (request, response) -> {
-                        int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
+                        int i = Integer.parseInt(replacePasInt(request.params(":name")));
                         AListe ee = model.getElement(i);
                         model.deleteElement(ee.getId());
                         response.redirect("/listes/all");
@@ -416,7 +421,7 @@ public class MainControleur {
                     });
                     delete("/:name", (request, response) -> {
                         //request.params(":name")
-                        int i = Integer.parseInt(request.params(":name").replace("^[0-9]",""));
+                        int i = Integer.parseInt(replacePasInt(request.params(":name")));
                         AListe ee = model.getElement(i);
                         model.deleteElement(ee.getId());
                         response.redirect("/listes/all");
@@ -538,6 +543,10 @@ public class MainControleur {
         return liste;
     }
 
+
+    public String replacePasInt(String s){
+        return s.replaceAll(",","").replaceAll(" ","").replaceAll("%","");
+    }
 
     //pas encore utile
     /**
