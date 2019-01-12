@@ -62,7 +62,7 @@ main/
 
 Base de donnée
 
-        TABLE ELEMENT -> ensemble des element liste ou "fueille" de liste
+        TABLE ELEMENT -> ensemble des element liste ou "feuille" de liste
                     id INTEGER not NULL -> identifiant de l'element (généré par aléatoirement)
                     idListe INTEGER not NULL -> inutile (cas d'un seul element pere)
                     dateCreation DATE -> Date de création de l'element
