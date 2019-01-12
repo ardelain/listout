@@ -147,8 +147,7 @@
 <script>
     function SelectLigne(obj)
     {
-        var t = \\d;
-        var idLigne=obj.id.toLocaleString().replace(t,"s");
+        var idLigne=obj.id.replace(",","").replace(" ","").replace(".","").replace("%","");
         location.replace("/listes/"+idLigne);
     }
 </script>
